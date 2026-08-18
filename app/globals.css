@@ -1,26 +1,297 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* =========================================================
+   MiMo-style SaaS — 极简黑白专业风格
+   主背景 #fafafa / 卡片 #fff / 文字 #0a0a0a / 次要 #595959
+   边框 #e5e5e5 / 按钮大圆角 16px / 导航半透明+阴影
+   ========================================================= */
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: #fafafa;
+  --color-foreground: #0a0a0a;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  --bg: #fafafa;
+  --bg-card: #ffffff;
+  --bg-soft: #f5f5f5;
+  --fg: #0a0a0a;
+  --fg-muted: #595959;
+  --fg-soft: #8c8c8c;
+  --line: #e5e5e5;
+  --line-soft: #f0f0f0;
+  --accent: #0a0a0a;
+  --selection-bg: #0a0a0a;
+  --selection-text: #ffffff;
+  --scroll-thumb: rgba(0, 0, 0, 0.15);
+  --scroll-thumb-hover: rgba(0, 0, 0, 0.3);
+  --nav-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  --card-shadow-hover: 0 8px 24px -8px rgba(0, 0, 0, 0.08);
 }
+
+* {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+html { scroll-behavior: smooth; }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+::selection { background: var(--selection-bg); color: var(--selection-text); }
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--scroll-thumb); border-radius: 8px; }
+::-webkit-scrollbar-thumb:hover { background: var(--scroll-thumb-hover); }
+
+/* =========================================================
+   Animations
+   ========================================================= */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes growBar { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+@keyframes pulse-dot { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+.fade-up { opacity: 0; animation: fadeUp 0.8s cubic-bezier(0.16,1,0.3,1) forwards; }
+.fade-in { opacity: 0; animation: fadeIn 1s ease forwards; }
+.delay-1 { animation-delay: 0.08s; }
+.delay-2 { animation-delay: 0.20s; }
+.delay-3 { animation-delay: 0.32s; }
+.delay-4 { animation-delay: 0.44s; }
+.delay-5 { animation-delay: 0.56s; }
+.delay-6 { animation-delay: 0.68s; }
+.delay-7 { animation-delay: 0.80s; }
+
+/* =========================================================
+   Helpers
+   ========================================================= */
+.tx-foreground { color: var(--fg); }
+.tx-muted    { color: var(--fg-muted); }
+.tx-soft     { color: var(--fg-soft); }
+.ln-line     { border-color: var(--line); }
+.ln-soft     { border-color: var(--line-soft); }
+.bg-card     { background: var(--bg-card); }
+.bg-soft     { background: var(--bg-soft); }
+.accent-logo { background: #0a0a0a; }
+
+/* =========================================================
+   Nav
+   ========================================================= */
+.nav-bar {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: saturate(180%) blur(12px);
+  -webkit-backdrop-filter: saturate(180%) blur(12px);
+  box-shadow: var(--nav-shadow);
+  border-bottom: 1px solid var(--line-soft);
+}
+
+/* =========================================================
+   Buttons — 大圆角 16px
+   ========================================================= */
+.btn-primary {
+  background: #0a0a0a;
+  color: #ffffff;
+  border-radius: 16px;
+  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+.btn-primary:hover {
+  background: #000000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+.btn-secondary {
+  background: #0a0a0a;
+  color: #ffffff;
+  border-radius: 16px;
+  transition: background 0.2s ease;
+}
+.btn-secondary:hover { background: #000000; }
+.btn-outline {
+  border: 1px solid var(--line);
+  color: var(--fg);
+  background: transparent;
+  border-radius: 16px;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+.btn-outline:hover { border-color: #0a0a0a; background: var(--bg-card); }
+
+/* =========================================================
+   Card
+   ========================================================= */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: var(--card-shadow);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+.card-hover:hover {
+  border-color: #d9d9d9;
+  box-shadow: var(--card-shadow-hover);
+}
+
+/* =========================================================
+   Badge
+   ========================================================= */
+.badge {
+  background: #0a0a0a;
+  color: #ffffff;
+  border-radius: 9999px;
+  padding: 0.2rem 0.65rem;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+.badge-soft {
+  background: var(--bg-soft);
+  color: var(--fg-muted);
+  border: 1px solid var(--line);
+  border-radius: 9999px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.72rem;
+  font-weight: 500;
+}
+
+/* =========================================================
+   Link underline
+   ========================================================= */
+.link-underline { position: relative; }
+.link-underline::after {
+  content: ""; position: absolute; left: 0; bottom: -2px;
+  width: 0; height: 1px; background: currentColor;
+  transition: width 0.35s cubic-bezier(0.16,1,0.3,1);
+}
+.link-underline:hover::after { width: 100%; }
+
+/* =========================================================
+   Marquee
+   ========================================================= */
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.marquee-track { display: flex; width: max-content; animation: marquee 40s linear infinite; }
+.mq-sep { color: rgba(0,0,0,0.15); }
+
+/* =========================================================
+   Pricing
+   ========================================================= */
+.pricing-card { padding: 2rem; }
+.pricing-featured {
+  border-color: #0a0a0a;
+  box-shadow: 0 12px 40px -12px rgba(0,0,0,0.12);
+}
+
+/* =========================================================
+   FAQ Accordion
+   ========================================================= */
+.faq-item { border-bottom: 1px solid var(--line); }
+.faq-question {
+  display: flex; align-items: center; justify-content: space-between;
+  width: 100%; padding: 1.25rem 0; text-align: left;
+  cursor: pointer; background: none; border: none;
+  font-family: inherit; font-size: 1rem; font-weight: 500;
+  color: var(--fg);
+}
+.faq-icon { transition: transform 0.3s ease; flex-shrink: 0; }
+.faq-icon-open { transform: rotate(45deg); }
+.faq-answer {
+  overflow: hidden;
+  transition: max-height 0.35s cubic-bezier(0.16,1,0.3,1), opacity 0.3s ease, padding 0.3s ease;
+}
+
+/* =========================================================
+   Dashboard mockup
+   ========================================================= */
+.mock-window {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  box-shadow: 0 20px 60px -20px rgba(0,0,0,0.12);
+}
+.mock-titlebar {
+  display: flex; align-items: center; gap: 6px;
+  padding: 10px 14px;
+  background: var(--bg-soft);
+  border-bottom: 1px solid var(--line);
+}
+.mock-dot { width: 10px; height: 10px; border-radius: 50%; }
+.mock-sidebar {
+  width: 48px;
+  background: var(--bg-soft);
+  border-right: 1px solid var(--line);
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
+  padding: 14px 0;
+}
+.mock-sb-item { width: 20px; height: 20px; border-radius: 5px; background: var(--line); }
+.mock-sb-active { background: #0a0a0a; }
+.mock-stat {
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--bg-card);
+}
+
+/* =========================================================
+   Bar chart (CSS)
+   ========================================================= */
+.bar-chart { display: flex; align-items: flex-end; gap: 6px; height: 120px; }
+.bar {
+  flex: 1;
+  background: var(--line);
+  border-radius: 4px 4px 0 0;
+  transform-origin: bottom;
+  animation: growBar 0.8s cubic-bezier(0.16,1,0.3,1) forwards;
+}
+.bar-dark { background: #0a0a0a; }
+
+/* =========================================================
+   Pulse dot (live indicator)
+   ========================================================= */
+.pulse-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #0a0a0a;
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+/* =========================================================
+   Avatar (initials)
+   ========================================================= */
+.avatar {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--bg-soft); border: 1px solid var(--line);
+  font-size: 0.85rem; font-weight: 600; color: var(--fg);
+}
+
+/* =========================================================
+   Chip filter
+   ========================================================= */
+.chip {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  border-radius: 9999px; padding: 0.5rem 1.1rem;
+  font-size: 0.85rem; line-height: 1.2rem;
+  transition: all 0.2s ease; background: transparent;
+  border: 1px solid var(--line); color: var(--fg-muted); cursor: pointer;
+}
+.chip:hover { border-color: #0a0a0a; color: var(--fg); }
+.chip-active { background: #0a0a0a; color: #ffffff; border-color: transparent; }
+
+/* =========================================================
+   Prefers reduced motion
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
