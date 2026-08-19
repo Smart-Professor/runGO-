@@ -1,0 +1,66 @@
+{
+  "node": {
+    "00b557aef58938f08030df86384a6bda98871e4136": {
+      "workers": {
+        "app/(main)/(protected)/(outside-dashboard)/projects/page": {
+          "moduleId": 812182,
+          "async": false,
+          "codeHash": null
+        }
+      },
+      "filename": "apps/dashboard/src/app/(main)/(protected)/(outside-dashboard)/projects/actions.ts",
+      "exportedName": "getArePlanLimitsEnforced"
+    },
+    "704344df64d73e1f64fe4f57a8e1778e0d5dc9036a": {
+      "workers": {
+        "app/(main)/(protected)/(outside-dashboard)/projects/page": {
+          "moduleId": 812182,
+          "async": false,
+          "codeHash": null
+        }
+      },
+      "filename": "apps/dashboard/src/app/(main)/(protected)/(outside-dashboard)/projects/actions.ts",
+      "exportedName": "inviteUser"
+    },
+    "40446f8fdc8734d1344334315a08c9d26a0d191e6b": {
+      "workers": {
+        "app/(main)/(protected)/(outside-dashboard)/projects/page": {
+          "moduleId": 812182,
+          "async": false,
+          "codeHash": null
+        }
+      },
+      "filename": "apps/dashboard/src/app/(main)/(protected)/(outside-dashboard)/projects/actions.ts",
+      "exportedName": "listInvitations"
+    },
+    "60c4ef7c40a6da73eb3bffd0d5607f6b6475df489a": {
+      "workers": {
+        "app/(main)/(protected)/(outside-dashboard)/projects/page": {
+          "moduleId": 812182,
+          "async": false,
+          "codeHash": null
+        }
+      },
+      "filename": "apps/dashboard/src/app/(main)/(protected)/(outside-dashboard)/projects/actions.ts",
+      "exportedName": "revokeInvitation"
+    },
+    "608d1bad108ceff746a39c95b8d81e0497a5d21b71": {
+      "workers": {
+        "app/(main)/integrations/custom/confirm/page": {
+          "moduleId": 447030,
+          "async": false,
+          "codeHash": null
+        },
+        "app/(main)/integrations/neon/confirm/page": {
+          "moduleId": 599556,
+          "async": false,
+          "codeHash": null
+        }
+      },
+      "filename": "apps/dashboard/src/app/(main)/integrations/oauth-confirm-page.tsx",
+      "exportedName": "$$RSC_SERVER_ACTION_0"
+    }
+  },
+  "edge": {},
+  "encryptionKey": "SirSg4Cct85ViKbV084NCJyIcpyXRIWFU9HWfqhe1WI="
+}

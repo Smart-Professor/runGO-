@@ -1,0 +1,3 @@
+module.exports=[467843,a=>{"use strict";var b=a.i(564581),c=a.i(876722),d=a.i(615335),e=a.i(643599);a.s(["default",0,function(){let{projectId:a}=(0,d.useParams)(),f=(0,b.useRouter)();return(0,e.useEffect)(()=>{f.replace(c.urlString`/projects/${a}/conversations`)},[a,f]),null}])}];
+
+//# sourceMappingURL=1vk4_src_app_%28main%29_%28protected%29_projects_%5BprojectId%5D_support_page_tsx_1j6u6jy._.js.map

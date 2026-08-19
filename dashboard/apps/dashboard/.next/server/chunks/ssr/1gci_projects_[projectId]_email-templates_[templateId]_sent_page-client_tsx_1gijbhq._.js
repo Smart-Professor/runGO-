@@ -1,0 +1,3 @@
+module.exports=[138579,a=>{"use strict";var b=a.i(340139),c=a.i(643599),d=a.i(98296),e=a.i(419931),f=a.i(594585),g=a.i(779438);a.s(["default",0,function({templateId:a}){let h=(0,f.useAdminApp)().useEmailTemplates(),i=(0,c.useMemo)(()=>h.find(b=>b.id===a),[h,a]),j=i?.displayName??`Template (${a.slice(0,8)}...)`,k=(0,c.useCallback)(b=>b.emailProgrammaticCallTemplateId===a,[a]);return(0,b.jsx)(d.AppEnabledGuard,{appId:"emails",children:(0,b.jsx)(e.PageLayout,{title:`Sent: ${j}`,children:(0,b.jsx)(g.SentEmailsView,{filterFn:k})})})}])}];
+
+//# sourceMappingURL=1gci_projects_%5BprojectId%5D_email-templates_%5BtemplateId%5D_sent_page-client_tsx_1gijbhq._.js.map

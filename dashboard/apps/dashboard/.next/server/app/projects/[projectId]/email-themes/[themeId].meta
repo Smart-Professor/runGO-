@@ -1,0 +1,59 @@
+{
+  "status": 200,
+  "headers": {
+    "link": "</_next/static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2>; rel=preload; as=\"font\"; crossorigin=\"\"; type=\"font/woff2\", </_next/static/media/GeistMono_Variable.p.41v1eixzgm5h6.woff2>; rel=preload; as=\"font\"; crossorigin=\"\"; type=\"font/woff2\", </_next/static/media/Geist_Variable-s.p.2glxvv8dkzvo5.woff2>; rel=preload; as=\"font\"; crossorigin=\"\"; type=\"font/woff2\"",
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/(main)/layout,_N_T_/(main)/(protected)/layout,_N_T_/(main)/(protected)/projects/layout,_N_T_/(main)/(protected)/projects/[projectId]/layout,_N_T_/(main)/(protected)/projects/[projectId]/email-themes/layout,_N_T_/(main)/(protected)/projects/[projectId]/email-themes/[themeId]/layout,_N_T_/(main)/(protected)/projects/[projectId]/email-themes/[themeId]/page"
+  },
+  "postponed": "3265:107[[\"projectId\",[\"%%drp:projectId:fda211bc9ebf88%%\",\"d\"]],[\"themeId\",[\"%%drp:themeId:fda211bc9ebf88%%\",\"d\"]]][1,{\"nextSegmentId\":2,\"rootFormatContext\":{\"insertionMode\":0,\"selectedValue\":null,\"tagScope\":0,\"viewTransition\":null},\"progressiveChunkSize\":12800,\"resumableState\":{\"idPrefix\":\"\",\"nextFormID\":0,\"streamingFormat\":0,\"instructions\":96,\"hasBody\":true,\"hasHtml\":true,\"unknownResources\":{\"font\":{\"/_next/static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2\":[],\"/_next/static/media/GeistMono_Variable.p.41v1eixzgm5h6.woff2\":[],\"/_next/static/media/Geist_Variable-s.p.2glxvv8dkzvo5.woff2\":[]}},\"dnsResources\":{},\"connectResources\":{\"default\":{},\"anonymous\":{},\"credentials\":{}},\"imageResources\":{},\"styleResources\":{\"/_next/static/chunks/3xsnxd_sw6qhv.css\":null,\"/_next/static/chunks/278m43pg-8ylf.css\":null,\"/_next/static/chunks/2yvetbxvdgwsq.css\":[]},\"scriptResources\":{\"/_next/static/chunks/0oyhk9g7m4j0k.js\":null,\"/_next/static/chunks/2kv2f8q-kyw2j.js\":null,\"/_next/static/chunks/3o33k6au8ubr6.js\":null,\"/_next/static/chunks/0avky972kjwhu.js\":null,\"/_next/static/chunks/2npoy2e-g2fve.js\":null,\"/_next/static/chunks/0ul7lv7ma7d4l.js\":null,\"/_next/static/chunks/1rtx1idvx_1fd.js\":null,\"/_next/static/chunks/turbopack-3lb3j3_-zgifm.js\":null,\"/_next/static/chunks/3auhmb8vuot4i.js\":null,\"/_next/static/chunks/1asfocn2922ob.js\":null,\"/_next/static/chunks/13q2yhzc7o0sz.js\":null,\"/_next/static/chunks/20da38gld5tpg.js\":null,\"/_next/static/chunks/0dx44al0t830m.js\":null,\"/_next/static/chunks/1t-fj-p7ga77k.js\":null,\"/_next/static/chunks/1q8l0z38q4uq3.js\":null,\"/_next/static/chunks/257rhcjgh4n_q.js\":null,\"/_next/static/chunks/33-vlrj1g3j6b.js\":null,\"/_next/static/chunks/1borjt0va7prf.js\":null,\"/_next/static/chunks/3q9nrrzlthld3.js\":null,\"/_next/static/chunks/29vkz4s8nv7w8.js\":null,\"/_next/static/chunks/3jewj3ia5rnaw.js\":null,\"/_next/static/chunks/2fq4aar74r1hb.js\":null,\"/_next/static/chunks/25h7sd8iygg8t.js\":null,\"/_next/static/chunks/11ujfqdk41azu.js\":null,\"/_next/static/chunks/3p9avx-irr-oi.js\":null,\"/_next/static/chunks/3z_rgc2t0ehcg.js\":null,\"/_next/static/chunks/1ob2nb5ue51kr.js\":null,\"/_next/static/chunks/3enahe_5l6em2.js\":null,\"/_next/static/chunks/3lhnaqu_wip_7.js\":null,\"/_next/static/chunks/3jr-y2xqjw_sh.js\":null,\"/_next/static/chunks/0jbuz5abplu9j.js\":null,\"/_next/static/chunks/3p7o2agtpa28e.js\":null,\"/_next/static/chunks/1hxs_fs7qhhjb.js\":null,\"/_next/static/chunks/1kywr_425u5jy.js\":null},\"moduleUnknownResources\":{},\"moduleScriptResources\":{\"/_next/static/chunks/0oyhk9g7m4j0k.js\":null}},\"replayNodes\":[[\"sv\",0,[[\"Context\",0,[[\"Context\",0,[[\"ServerInsertedHTMLProvider\",0,[[\"Context\",0,[[\"ih\",0,[[\"a0\",0,[[\"aZ\",0,[[\"aQ\",0,[[\"id\",0,[[\"Fragment\",0,[[\"Context\",2,[[\"Context\",0,[[\"Context\",0,[[\"Context\",0,[[\"Context\",0,[[\"Context\",0,[[\"Context\",0,[[\"a0\",0,[[\"aZ\",0,[[\"aQ\",0,[[\"ay\",0,[[\"ag\",0,[[\"__next_root_layout_boundary__\",1,[[null,0,[[\"Context\",0,[[\"Fragment\",\"c\",[[\"html\",1,[[\"body\",1,[[null,1,[[\"Suspense\",0,[],0,[\"Suspense Fallback\",0,[],null],0]],null],[\"Suspense\",2,[],1,[\"Suspense Fallback\",2,[],null],1]],null]],null]],null]],null]],null]],null]],null]],null]],null]],null]],null]],null]],null]],null]],null]],null]],null]],null]],null]],null]],null]],null]],null]],null]],null]],null]],null]],null]],null]],\"replaySlots\":null}]null",
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/email-themes/$d$themeId/__PAGE__",
+    "/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/@modal/__DEFAULT__"
+  ],
+  "prefetchHints": {
+    "hints": 64,
+    "slots": {
+      "children": {
+        "hints": 96,
+        "slots": {
+          "children": {
+            "hints": 96,
+            "slots": {
+              "children": {
+                "hints": 96,
+                "slots": {
+                  "children": {
+                    "hints": 96,
+                    "slots": {
+                      "children": {
+                        "hints": 96,
+                        "slots": {
+                          "children": {
+                            "hints": 96,
+                            "slots": {
+                              "children": {
+                                "hints": 160,
+                                "slots": null
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "modal": {
+                        "hints": 0,
+                        "slots": null
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

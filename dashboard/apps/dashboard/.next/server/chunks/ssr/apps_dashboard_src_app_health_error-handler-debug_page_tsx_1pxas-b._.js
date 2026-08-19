@@ -1,0 +1,3 @@
+module.exports=[738940,a=>{"use strict";var b=a.i(340139),c=a.i(767854);a.i(990559);var d=a.i(268415);a.s(["default",0,function(){return(0,b.jsxs)("div",{children:["This page is useful for testing error handling.",(0,b.jsx)("br",{}),"Your observability platform should pick up on the errors thrown below.",(0,b.jsx)("br",{}),(0,b.jsx)(d.Button,{onClick:()=>(0,c.throwErr)("Client debug error thrown successfully!"),children:"Throw client error"}),(0,b.jsx)(d.Button,{onClick:async()=>{console.log("Endpoint response",await fetch("/health/error-handler-debug/endpoint"))},children:"Throw server error"})]})}])}];
+
+//# sourceMappingURL=apps_dashboard_src_app_health_error-handler-debug_page_tsx_1pxas-b._.js.map

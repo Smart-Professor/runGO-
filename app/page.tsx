@@ -1,5 +1,6 @@
 import Link from "next/link";
 import FAQ from "./FAQ";
+import Nav from "../components/Nav";
 
 /* =========================================================
    Data
@@ -241,27 +242,7 @@ export default function Home() {
   return (
     <div className="relative">
       {/* ===== NAV ===== */}
-      <header className="nav-bar fixed top-0 left-0 right-0 z-50">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10">
-          <nav className="flex items-center justify-between py-3.5">
-            <Link href="/" className="flex items-center gap-2 shrink-0">
-              <span className="accent-logo inline-block h-2 w-2 rounded-full" />
-              <span className="text-lg font-semibold tracking-tight tx-foreground">Aurora</span>
-            </Link>
-            <div className="hidden items-center gap-7 text-sm tx-muted md:flex">
-              <Link href="/products" className="link-underline transition hover:tx-foreground">Platform</Link>
-              <a href="#features" className="link-underline transition hover:tx-foreground">Features</a>
-              <a href="#pricing" className="link-underline transition hover:tx-foreground">Pricing</a>
-              <a href="#" className="link-underline transition hover:tx-foreground">Docs</a>
-              <a href="#" className="link-underline transition hover:tx-foreground">Blog</a>
-            </div>
-            <div className="flex items-center gap-3">
-              <a href="#" className="hidden text-sm tx-muted transition hover:tx-foreground sm:inline">Sign in</a>
-              <a href="#pricing" className="btn-primary px-5 py-2 text-sm font-medium">Get started</a>
-            </div>
-          </nav>
-        </div>
-      </header>
+      <Nav />
 
       {/* ===== HERO ===== */}
       <section className="flex min-h-screen items-center pt-28 pb-16">

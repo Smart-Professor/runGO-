@@ -1,0 +1,16 @@
+{
+  "node": {
+    "608d1bad108ceff746a39c95b8d81e0497a5d21b71": {
+      "workers": {
+        "app/(main)/integrations/custom/confirm/page": {
+          "moduleId": 447030,
+          "async": false,
+          "codeHash": null
+        }
+      },
+      "exportedName": "$$RSC_SERVER_ACTION_0",
+      "filename": "apps/dashboard/src/app/(main)/integrations/oauth-confirm-page.tsx"
+    }
+  },
+  "edge": {}
+}

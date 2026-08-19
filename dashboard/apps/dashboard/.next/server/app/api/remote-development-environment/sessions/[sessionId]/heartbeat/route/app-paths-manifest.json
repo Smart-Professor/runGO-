@@ -1,0 +1,3 @@
+{
+  "/api/remote-development-environment/sessions/[sessionId]/heartbeat/route": "app/api/remote-development-environment/sessions/[sessionId]/heartbeat/route.js"
+}

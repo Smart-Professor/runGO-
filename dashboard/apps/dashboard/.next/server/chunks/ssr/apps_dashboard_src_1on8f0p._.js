@@ -1,0 +1,3 @@
+module.exports=[413540,a=>{"use strict";var b=a.i(736841),c=a.i(830627);a.s(["default",0,function({children:a}){return(0,b.jsxs)("div",{className:"flex flex-col min-h-screen relative",children:[(0,b.jsx)(c.Navbar,{}),a]})}])},596405,function(a){a.n(a.i(413540))},961745,a=>{"use strict";a.s(["Navbar",()=>b]);let b=(0,a.i(51145).registerClientReference)(function(){throw Error("Attempted to call Navbar() from the server but Navbar is on the client. It's not possible to invoke a client function from the server, it can only be rendered as a Component or passed to props of a Client Component.")},"[project]/apps/dashboard/src/components/navbar.tsx","Navbar")},830627,a=>{"use strict";var b=a.i(961745);a.n(b)}];
+
+//# sourceMappingURL=apps_dashboard_src_1on8f0p._.js.map

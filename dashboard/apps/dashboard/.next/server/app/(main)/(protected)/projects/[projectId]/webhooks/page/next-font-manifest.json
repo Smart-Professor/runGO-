@@ -1,0 +1,12 @@
+{
+  "pages": {},
+  "app": {
+    "[project]/apps/dashboard/src/app/(main)/(protected)/projects/[projectId]/webhooks/page": [
+      "static/media/GeistMono_Variable.p.41v1eixzgm5h6.woff2",
+      "static/media/Geist_Variable-s.p.2glxvv8dkzvo5.woff2",
+      "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
+    ]
+  },
+  "appUsingSizeAdjust": true,
+  "pagesUsingSizeAdjust": false
+}

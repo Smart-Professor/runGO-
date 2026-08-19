@@ -1,0 +1,3 @@
+module.exports=[416052,a=>{"use strict";var b=a.i(643599),c=a.i(325120),d=a.i(340139),e=b.forwardRef((a,b)=>{let{ratio:e=1,style:f,...g}=a;return(0,d.jsx)("div",{style:{position:"relative",width:"100%",paddingBottom:`${100/e}%`},"data-radix-aspect-ratio-wrapper":"",children:(0,d.jsx)(c.Primitive.div,{...g,ref:b,style:{...f,position:"absolute",top:0,right:0,bottom:0,left:0}})})});e.displayName="AspectRatio",a.s(["AspectRatio",0,e],416052)},131261,a=>{"use strict";var b=a.i(803617);let c=b.Root,d=b.CollapsibleTrigger,e=b.CollapsibleContent;a.s(["Collapsible",0,c,"CollapsibleContent",0,e,"CollapsibleTrigger",0,d])}];
+
+//# sourceMappingURL=packages_ui_dist_esm_components_ui_0-7gb-o._.js.map

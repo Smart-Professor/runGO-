@@ -1,0 +1,49 @@
+{
+  "node": {
+    "00b557aef58938f08030df86384a6bda98871e4136": {
+      "workers": {
+        "app/(main)/(protected)/(outside-dashboard)/projects/page": {
+          "moduleId": 812182,
+          "async": false,
+          "codeHash": null
+        }
+      },
+      "exportedName": "getArePlanLimitsEnforced",
+      "filename": "apps/dashboard/src/app/(main)/(protected)/(outside-dashboard)/projects/actions.ts"
+    },
+    "704344df64d73e1f64fe4f57a8e1778e0d5dc9036a": {
+      "workers": {
+        "app/(main)/(protected)/(outside-dashboard)/projects/page": {
+          "moduleId": 812182,
+          "async": false,
+          "codeHash": null
+        }
+      },
+      "exportedName": "inviteUser",
+      "filename": "apps/dashboard/src/app/(main)/(protected)/(outside-dashboard)/projects/actions.ts"
+    },
+    "40446f8fdc8734d1344334315a08c9d26a0d191e6b": {
+      "workers": {
+        "app/(main)/(protected)/(outside-dashboard)/projects/page": {
+          "moduleId": 812182,
+          "async": false,
+          "codeHash": null
+        }
+      },
+      "exportedName": "listInvitations",
+      "filename": "apps/dashboard/src/app/(main)/(protected)/(outside-dashboard)/projects/actions.ts"
+    },
+    "60c4ef7c40a6da73eb3bffd0d5607f6b6475df489a": {
+      "workers": {
+        "app/(main)/(protected)/(outside-dashboard)/projects/page": {
+          "moduleId": 812182,
+          "async": false,
+          "codeHash": null
+        }
+      },
+      "exportedName": "revokeInvitation",
+      "filename": "apps/dashboard/src/app/(main)/(protected)/(outside-dashboard)/projects/actions.ts"
+    }
+  },
+  "edge": {}
+}

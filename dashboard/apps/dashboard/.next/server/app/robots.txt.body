@@ -1,0 +1,13 @@
+User-Agent: *
+Allow: /
+Disallow: /api/
+Disallow: /handler/
+Disallow: /projects/
+Disallow: /new-project
+Disallow: /playground
+Disallow: /purchase/
+Disallow: /integrations/
+Disallow: /health
+Disallow: /rde-debug
+Disallow: /development-environment
+

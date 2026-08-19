@@ -1,0 +1,3 @@
+module.exports=[835809,a=>{"use strict";var b=a.i(340139),c=a.i(162101);a.i(990559);var d=a.i(732645),e=a.i(95805),f=a.i(419931),g=a.i(590722),h=a.i(594585);function i(){let a=(0,h.useAdminApp)().useProject(),i="true"===(0,e.getPublicEnvVar)("NEXT_PUBLIC_STACK_IS_PREVIEW");return(0,b.jsx)(f.PageLayout,{title:"Payouts",children:i||a.isDevelopmentEnvironment?(0,b.jsxs)(d.Alert,{children:["Payouts are unavailable in ",a.isDevelopmentEnvironment?"development environments":"preview mode","."]}):(0,b.jsx)(g.StripeConnectProvider,{children:(0,b.jsx)(c.ConnectPayouts,{})})})}a.s(["default",0,function(){return(0,b.jsx)(i,{})}],835809)}];
+
+//# sourceMappingURL=1rhj_app_%28main%29_%28protected%29_projects_%5BprojectId%5D_payments_payouts_page_tsx_1k8duou._.js.map

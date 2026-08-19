@@ -1,0 +1,3 @@
+{
+  "/(main)/(protected)/projects/[projectId]/email-viewer/[emailId]/page": "app/(main)/(protected)/projects/[projectId]/email-viewer/[emailId]/page.js"
+}

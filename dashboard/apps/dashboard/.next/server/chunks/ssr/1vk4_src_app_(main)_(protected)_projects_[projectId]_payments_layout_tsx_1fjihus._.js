@@ -1,0 +1,3 @@
+module.exports=[462290,a=>{"use strict";a.s(["default",()=>b]);let b=(0,a.i(51145).registerClientReference)(function(){throw Error("Attempted to call the default export of [project]/apps/dashboard/src/app/(main)/(protected)/projects/[projectId]/payments/layout.tsx from the server, but it's on the client. It's not possible to invoke a client function from the server, it can only be rendered as a Component or passed to props of a Client Component.")},"[project]/apps/dashboard/src/app/(main)/(protected)/projects/[projectId]/payments/layout.tsx","default")},707063,a=>{"use strict";var b=a.i(462290);a.n(b)},731190,function(a){a.n(a.i(707063))}];
+
+//# sourceMappingURL=1vk4_src_app_%28main%29_%28protected%29_projects_%5BprojectId%5D_payments_layout_tsx_1fjihus._.js.map

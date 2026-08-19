@@ -1,0 +1,1 @@
+@keyframes svix-pulse{0%,to{background:#edf2f7}50%{background:#a0aec0}}@keyframes svix-pulse-dark{0%,to{background:#1a202c}50%{background:#4a5568}}.Svix__mask{z-index:1;width:100%;height:100%;position:absolute;inset:0}.Svix__light{animation:2s cubic-bezier(.4,0,.6,1) infinite svix-pulse}.Svix__dark{animation:2s cubic-bezier(.4,0,.6,1) infinite svix-pulse-dark}

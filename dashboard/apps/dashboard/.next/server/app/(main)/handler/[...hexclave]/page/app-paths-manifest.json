@@ -1,0 +1,3 @@
+{
+  "/(main)/handler/[...hexclave]/page": "app/(main)/handler/[...hexclave]/page.js"
+}

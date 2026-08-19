@@ -1,0 +1,1 @@
+(globalThis.TURBOPACK||(globalThis.TURBOPACK=[])).push(["object"==typeof document?document.currentScript:void 0,996443,e=>{"use strict";var t=e.i(526190),r=e.i(267696),u=e.i(643825),s=e.i(648534);e.s(["default",0,function(){let{projectId:e}=(0,u.useParams)(),i=(0,t.useRouter)();return(0,s.useEffect)(()=>{i.replace(r.urlString`/projects/${e}/conversations`)},[e,i]),null}])}]);

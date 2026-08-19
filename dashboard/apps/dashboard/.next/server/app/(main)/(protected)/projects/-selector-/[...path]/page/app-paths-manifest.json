@@ -1,0 +1,3 @@
+{
+  "/(main)/(protected)/projects/-selector-/[...path]/page": "app/(main)/(protected)/projects/-selector-/[...path]/page.js"
+}

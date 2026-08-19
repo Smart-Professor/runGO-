@@ -1,0 +1,53 @@
+{
+  "status": 200,
+  "headers": {
+    "link": "</_next/static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2>; rel=preload; as=\"font\"; crossorigin=\"\"; type=\"font/woff2\", </_next/static/media/GeistMono_Variable.p.41v1eixzgm5h6.woff2>; rel=preload; as=\"font\"; crossorigin=\"\"; type=\"font/woff2\", </_next/static/media/Geist_Variable-s.p.2glxvv8dkzvo5.woff2>; rel=preload; as=\"font\"; crossorigin=\"\"; type=\"font/woff2\"",
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/(main)/layout,_N_T_/(main)/(protected)/layout,_N_T_/(main)/(protected)/projects/layout,_N_T_/(main)/(protected)/projects/[projectId]/layout,_N_T_/(main)/(protected)/projects/[projectId]/gtm/layout,_N_T_/(main)/(protected)/projects/[projectId]/gtm/page"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/gtm/__PAGE__",
+    "/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/@modal/__DEFAULT__"
+  ],
+  "prefetchHints": {
+    "hints": 64,
+    "slots": {
+      "children": {
+        "hints": 96,
+        "slots": {
+          "children": {
+            "hints": 96,
+            "slots": {
+              "children": {
+                "hints": 96,
+                "slots": {
+                  "children": {
+                    "hints": 96,
+                    "slots": {
+                      "children": {
+                        "hints": 96,
+                        "slots": {
+                          "children": {
+                            "hints": 160,
+                            "slots": null
+                          }
+                        }
+                      },
+                      "modal": {
+                        "hints": 0,
+                        "slots": null
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

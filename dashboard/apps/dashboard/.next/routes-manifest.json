@@ -1,0 +1,1852 @@
+{
+  "version": 3,
+  "pages404": true,
+  "appType": "app",
+  "caseSensitive": false,
+  "basePath": "",
+  "redirects": [
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "internal": true,
+      "priority": true,
+      "statusCode": 308,
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Cross-Origin-Opener-Policy",
+          "value": "same-origin-allow-popups"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": ""
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "frame-ancestors 'self' http://localhost:* https://localhost:* http://*.localhost:* https://*.localhost:* http://127.0.0.1:* https://127.0.0.1:* http://[::1]:* https://[::1]:*"
+        }
+      ],
+      "regex": "^(?:/(.*))(?:/)?$"
+    }
+  ],
+  "onMatchHeaders": [],
+  "rewrites": {
+    "beforeFiles": [
+      {
+        "source": "/projects/:nxtPprojectId/apps/:nxtPappId",
+        "destination": "/projects/:nxtPprojectId/(.)apps/:nxtPappId",
+        "has": [
+          {
+            "type": "header",
+            "key": "next-url",
+            "value": "/projects/(?<nxtPprojectId>[^/]+?)(?:/.*)?"
+          }
+        ],
+        "regex": "^/projects(?:/([^/]+?))/apps(?:/([^/]+?))(?:/)?$"
+      }
+    ],
+    "afterFiles": [
+      {
+        "source": "/consume/static/:path*",
+        "destination": "https://eu-assets.i.posthog.com/static/:path*",
+        "regex": "^/consume/static(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))?(?:/)?$"
+      },
+      {
+        "source": "/consume/:path*",
+        "destination": "https://eu.i.posthog.com/:path*",
+        "regex": "^/consume(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))?(?:/)?$"
+      },
+      {
+        "source": "/consume/decide",
+        "destination": "https://eu.i.posthog.com/decide",
+        "regex": "^/consume/decide(?:/)?$"
+      }
+    ],
+    "fallback": []
+  },
+  "dynamicRoutes": [
+    {
+      "page": "/api/remote-development-environment/sessions/[sessionId]",
+      "regex": "^/api/remote\\-development\\-environment/sessions/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPsessionId": "nxtPsessionId"
+      },
+      "namedRegex": "^/api/remote\\-development\\-environment/sessions/(?<nxtPsessionId>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/remote-development-environment/sessions/[sessionId]/heartbeat",
+      "regex": "^/api/remote\\-development\\-environment/sessions/([^/]+?)/heartbeat(?:/)?$",
+      "routeKeys": {
+        "nxtPsessionId": "nxtPsessionId"
+      },
+      "namedRegex": "^/api/remote\\-development\\-environment/sessions/(?<nxtPsessionId>[^/]+?)/heartbeat(?:/)?$"
+    },
+    {
+      "page": "/api/[...any]",
+      "regex": "^/api/(.+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPany": "nxtPany"
+      },
+      "namedRegex": "^/api/(?<nxtPany>.+?)(?:/)?$"
+    },
+    {
+      "page": "/handler/[...hexclave]",
+      "regex": "^/handler/(.+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPhexclave": "nxtPhexclave"
+      },
+      "namedRegex": "^/handler/(?<nxtPhexclave>.+?)(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/handler/[...hexclave].segments/!KG1haW4p/handler/$c$hexclave$segment",
+          "source": "^/handler/(?<nxtPhexclave>.+?)\\.segments/!KG1haW4p/handler/\\$c\\$hexclave(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPhexclave": "nxtPhexclave"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/-selector-/[...path]",
+      "regex": "^/projects/\\-selector\\-/(.+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPpath": "nxtPpath"
+      },
+      "namedRegex": "^/projects/\\-selector\\-/(?<nxtPpath>.+?)(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/-selector-/[...path].segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/-selector-/$c$path$segment",
+          "source": "^/projects/\\-selector\\-/(?<nxtPpath>.+?)\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\-selector\\-/\\$c\\$path(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPpath": "nxtPpath"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]",
+      "regex": "^/projects/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId].segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/!KG92ZXJ2aWV3KQ$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/!KG92ZXJ2aWV3KQ(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/(.)apps/[appId]",
+      "regex": "^/projects/([^/]+?)/\\(\\.\\)apps/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId",
+        "nxtPappId": "nxtPappId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/\\(\\.\\)apps/(?<nxtPappId>[^/]+?)(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/(.)apps/[appId].segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/@modal/!KF9fU0xPVF9fKQ/!KC4pYXBwcw/$d$appId$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/\\(\\.\\)apps/(?<nxtPappId>[^/]+?)\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/@modal/!KF9fU0xPVF9fKQ/!KC4pYXBwcw/\\$d\\$appId(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId",
+            "nxtPappId": "nxtPappId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/analytics",
+      "regex": "^/projects/([^/]+?)/analytics(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/analytics(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/analytics.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/analytics$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/analytics\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/analytics(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/analytics/clickmaps",
+      "regex": "^/projects/([^/]+?)/analytics/clickmaps(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/analytics/clickmaps(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/analytics/clickmaps.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/analytics/clickmaps$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/analytics/clickmaps\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/analytics/clickmaps(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/analytics/funnel-graph",
+      "regex": "^/projects/([^/]+?)/analytics/funnel\\-graph(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/analytics/funnel\\-graph(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/analytics/funnel-graph.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/analytics/funnel-graph$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/analytics/funnel\\-graph\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/analytics/funnel\\-graph(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/analytics/overview",
+      "regex": "^/projects/([^/]+?)/analytics/overview(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/analytics/overview(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/analytics/overview.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/analytics/overview$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/analytics/overview\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/analytics/overview(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/analytics/queries",
+      "regex": "^/projects/([^/]+?)/analytics/queries(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/analytics/queries(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/analytics/queries.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/analytics/queries$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/analytics/queries\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/analytics/queries(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/analytics/tables",
+      "regex": "^/projects/([^/]+?)/analytics/tables(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/analytics/tables(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/analytics/tables.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/analytics/tables$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/analytics/tables\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/analytics/tables(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/api-keys",
+      "regex": "^/projects/([^/]+?)/api\\-keys(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/api\\-keys(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/api-keys.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/api-keys$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/api\\-keys\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/api\\-keys(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/api-keys-app",
+      "regex": "^/projects/([^/]+?)/api\\-keys\\-app(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/api\\-keys\\-app(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/api-keys-app.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/api-keys-app$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/api\\-keys\\-app\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/api\\-keys\\-app(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/apps",
+      "regex": "^/projects/([^/]+?)/apps(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/apps(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/apps.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/apps$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/apps\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/apps(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/apps/[appId]",
+      "regex": "^/projects/([^/]+?)/apps/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId",
+        "nxtPappId": "nxtPappId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/apps/(?<nxtPappId>[^/]+?)(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/apps/[appId].segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/apps/$d$appId$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/apps/(?<nxtPappId>[^/]+?)\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/apps/\\$d\\$appId(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId",
+            "nxtPappId": "nxtPappId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/auth-methods",
+      "regex": "^/projects/([^/]+?)/auth\\-methods(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/auth\\-methods(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/auth-methods.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/auth-methods$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/auth\\-methods\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/auth\\-methods(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/cli-auth",
+      "regex": "^/projects/([^/]+?)/cli\\-auth(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/cli\\-auth(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/cli-auth.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/cli-auth$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/cli\\-auth\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/cli\\-auth(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/compliance",
+      "regex": "^/projects/([^/]+?)/compliance(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/compliance(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/compliance.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/compliance$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/compliance\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/compliance(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/conversations",
+      "regex": "^/projects/([^/]+?)/conversations(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/conversations(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/conversations.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/conversations$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/conversations\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/conversations(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/convex",
+      "regex": "^/projects/([^/]+?)/convex(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/convex(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/convex.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/convex$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/convex\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/convex(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/dashboards",
+      "regex": "^/projects/([^/]+?)/dashboards(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/dashboards(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/dashboards.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/dashboards$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/dashboards\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/dashboards(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/dashboards/[dashboardId]",
+      "regex": "^/projects/([^/]+?)/dashboards/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId",
+        "nxtPdashboardId": "nxtPdashboardId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/dashboards/(?<nxtPdashboardId>[^/]+?)(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/dashboards/[dashboardId].segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/dashboards/$d$dashboardId$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/dashboards/(?<nxtPdashboardId>[^/]+?)\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/dashboards/\\$d\\$dashboardId(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId",
+            "nxtPdashboardId": "nxtPdashboardId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/data-vault",
+      "regex": "^/projects/([^/]+?)/data\\-vault(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/data\\-vault(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/data-vault.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/data-vault$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/data\\-vault\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/data\\-vault(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/data-vault/stores",
+      "regex": "^/projects/([^/]+?)/data\\-vault/stores(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/data\\-vault/stores(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/data-vault/stores.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/data-vault/stores$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/data\\-vault/stores\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/data\\-vault/stores(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/data-vault/stores/[storeId]",
+      "regex": "^/projects/([^/]+?)/data\\-vault/stores/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId",
+        "nxtPstoreId": "nxtPstoreId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/data\\-vault/stores/(?<nxtPstoreId>[^/]+?)(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/data-vault/stores/[storeId].segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/data-vault/stores/$d$storeId$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/data\\-vault/stores/(?<nxtPstoreId>[^/]+?)\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/data\\-vault/stores/\\$d\\$storeId(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId",
+            "nxtPstoreId": "nxtPstoreId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/deployments",
+      "regex": "^/projects/([^/]+?)/deployments(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/deployments(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/deployments.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/deployments$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/deployments\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/deployments(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/design-language",
+      "regex": "^/projects/([^/]+?)/design\\-language(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/design\\-language(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/design-language.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/design-language$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/design\\-language\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/design\\-language(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/design-language/chart-demo",
+      "regex": "^/projects/([^/]+?)/design\\-language/chart\\-demo(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/design\\-language/chart\\-demo(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/design-language/chart-demo.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/design-language/chart-demo$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/design\\-language/chart\\-demo\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/design\\-language/chart\\-demo(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/design-language/datagrid-demo",
+      "regex": "^/projects/([^/]+?)/design\\-language/datagrid\\-demo(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/design\\-language/datagrid\\-demo(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/design-language/datagrid-demo.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/design-language/datagrid-demo$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/design\\-language/datagrid\\-demo\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/design\\-language/datagrid\\-demo(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/design-language/realistic-demo",
+      "regex": "^/projects/([^/]+?)/design\\-language/realistic\\-demo(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/design\\-language/realistic\\-demo(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/design-language/realistic-demo.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/design-language/realistic-demo$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/design\\-language/realistic\\-demo\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/design\\-language/realistic\\-demo(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/domains",
+      "regex": "^/projects/([^/]+?)/domains(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/domains(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/domains.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/domains$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/domains\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/domains(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/email-api",
+      "regex": "^/projects/([^/]+?)/email\\-api(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/email\\-api(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/email-api.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/email-api$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/email\\-api\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/email\\-api(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/email-drafts",
+      "regex": "^/projects/([^/]+?)/email\\-drafts(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/email\\-drafts(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/email-drafts.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/email-drafts$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/email\\-drafts\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/email\\-drafts(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/email-drafts/[draftId]",
+      "regex": "^/projects/([^/]+?)/email\\-drafts/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId",
+        "nxtPdraftId": "nxtPdraftId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/email\\-drafts/(?<nxtPdraftId>[^/]+?)(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/email-drafts/[draftId].segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/email-drafts/$d$draftId$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/email\\-drafts/(?<nxtPdraftId>[^/]+?)\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/email\\-drafts/\\$d\\$draftId(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId",
+            "nxtPdraftId": "nxtPdraftId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/email-sent",
+      "regex": "^/projects/([^/]+?)/email\\-sent(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/email\\-sent(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/email-sent.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/email-sent$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/email\\-sent\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/email\\-sent(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/email-sent/no-source",
+      "regex": "^/projects/([^/]+?)/email\\-sent/no\\-source(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/email\\-sent/no\\-source(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/email-sent/no-source.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/email-sent/no-source$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/email\\-sent/no\\-source\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/email\\-sent/no\\-source(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/email-settings",
+      "regex": "^/projects/([^/]+?)/email\\-settings(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/email\\-settings(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/email-settings.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/email-settings$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/email\\-settings\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/email\\-settings(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/email-templates",
+      "regex": "^/projects/([^/]+?)/email\\-templates(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/email\\-templates(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/email-templates.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/email-templates$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/email\\-templates\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/email\\-templates(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/email-templates/[templateId]",
+      "regex": "^/projects/([^/]+?)/email\\-templates/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId",
+        "nxtPtemplateId": "nxtPtemplateId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/email\\-templates/(?<nxtPtemplateId>[^/]+?)(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/email-templates/[templateId].segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/email-templates/$d$templateId$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/email\\-templates/(?<nxtPtemplateId>[^/]+?)\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/email\\-templates/\\$d\\$templateId(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId",
+            "nxtPtemplateId": "nxtPtemplateId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/email-templates/[templateId]/sent",
+      "regex": "^/projects/([^/]+?)/email\\-templates/([^/]+?)/sent(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId",
+        "nxtPtemplateId": "nxtPtemplateId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/email\\-templates/(?<nxtPtemplateId>[^/]+?)/sent(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/email-templates/[templateId]/sent.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/email-templates/$d$templateId/sent$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/email\\-templates/(?<nxtPtemplateId>[^/]+?)/sent\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/email\\-templates/\\$d\\$templateId/sent(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId",
+            "nxtPtemplateId": "nxtPtemplateId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/email-themes",
+      "regex": "^/projects/([^/]+?)/email\\-themes(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/email\\-themes(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/email-themes.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/email-themes$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/email\\-themes\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/email\\-themes(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/email-themes/[themeId]",
+      "regex": "^/projects/([^/]+?)/email\\-themes/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId",
+        "nxtPthemeId": "nxtPthemeId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/email\\-themes/(?<nxtPthemeId>[^/]+?)(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/email-themes/[themeId].segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/email-themes/$d$themeId$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/email\\-themes/(?<nxtPthemeId>[^/]+?)\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/email\\-themes/\\$d\\$themeId(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId",
+            "nxtPthemeId": "nxtPthemeId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/email-viewer/[emailId]",
+      "regex": "^/projects/([^/]+?)/email\\-viewer/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId",
+        "nxtPemailId": "nxtPemailId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/email\\-viewer/(?<nxtPemailId>[^/]+?)(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/email-viewer/[emailId].segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/email-viewer/$d$emailId$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/email\\-viewer/(?<nxtPemailId>[^/]+?)\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/email\\-viewer/\\$d\\$emailId(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId",
+            "nxtPemailId": "nxtPemailId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/emails",
+      "regex": "^/projects/([^/]+?)/emails(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/emails(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/emails.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/emails$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/emails\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/emails(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/expert-mode",
+      "regex": "^/projects/([^/]+?)/expert\\-mode(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/expert\\-mode(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/expert-mode.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/expert-mode$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/expert\\-mode\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/expert\\-mode(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/external-db-sync",
+      "regex": "^/projects/([^/]+?)/external\\-db\\-sync(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/external\\-db\\-sync(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/external-db-sync.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/external-db-sync$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/external\\-db\\-sync\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/external\\-db\\-sync(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/gtm",
+      "regex": "^/projects/([^/]+?)/gtm(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/gtm(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/gtm.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/gtm$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/gtm\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/gtm(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/gtm/actions/[actionId]",
+      "regex": "^/projects/([^/]+?)/gtm/actions/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId",
+        "nxtPactionId": "nxtPactionId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/gtm/actions/(?<nxtPactionId>[^/]+?)(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/gtm/actions/[actionId].segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/gtm/actions/$d$actionId$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/gtm/actions/(?<nxtPactionId>[^/]+?)\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/gtm/actions/\\$d\\$actionId(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId",
+            "nxtPactionId": "nxtPactionId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/gtm/admin",
+      "regex": "^/projects/([^/]+?)/gtm/admin(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/gtm/admin(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/gtm/admin.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/gtm/admin$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/gtm/admin\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/gtm/admin(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/gtm/admin/[targetProjectId]/[suggestionType]/[suggestionId]",
+      "regex": "^/projects/([^/]+?)/gtm/admin/([^/]+?)/([^/]+?)/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId",
+        "nxtPtargetProjectId": "nxtPtargetProjectId",
+        "nxtPsuggestionType": "nxtPsuggestionType",
+        "nxtPsuggestionId": "nxtPsuggestionId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/gtm/admin/(?<nxtPtargetProjectId>[^/]+?)/(?<nxtPsuggestionType>[^/]+?)/(?<nxtPsuggestionId>[^/]+?)(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/gtm/admin/[targetProjectId]/[suggestionType]/[suggestionId].segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/gtm/admin/$d$targetProjectId/$d$suggestionType/$d$suggestionId$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/gtm/admin/(?<nxtPtargetProjectId>[^/]+?)/(?<nxtPsuggestionType>[^/]+?)/(?<nxtPsuggestionId>[^/]+?)\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/gtm/admin/\\$d\\$targetProjectId/\\$d\\$suggestionType/\\$d\\$suggestionId(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId",
+            "nxtPtargetProjectId": "nxtPtargetProjectId",
+            "nxtPsuggestionType": "nxtPsuggestionType",
+            "nxtPsuggestionId": "nxtPsuggestionId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/gtm/insights/[insightId]",
+      "regex": "^/projects/([^/]+?)/gtm/insights/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId",
+        "nxtPinsightId": "nxtPinsightId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/gtm/insights/(?<nxtPinsightId>[^/]+?)(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/gtm/insights/[insightId].segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/gtm/insights/$d$insightId$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/gtm/insights/(?<nxtPinsightId>[^/]+?)\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/gtm/insights/\\$d\\$insightId(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId",
+            "nxtPinsightId": "nxtPinsightId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/launch-checklist",
+      "regex": "^/projects/([^/]+?)/launch\\-checklist(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/launch\\-checklist(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/launch-checklist.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/launch-checklist$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/launch\\-checklist\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/launch\\-checklist(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/newly-created-projects",
+      "regex": "^/projects/([^/]+?)/newly\\-created\\-projects(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/newly\\-created\\-projects(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/newly-created-projects.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/newly-created-projects$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/newly\\-created\\-projects\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/newly\\-created\\-projects(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/onboarding",
+      "regex": "^/projects/([^/]+?)/onboarding(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/onboarding(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/onboarding.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/onboarding$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/onboarding\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/onboarding(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/payments",
+      "regex": "^/projects/([^/]+?)/payments(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/payments(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/payments.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/payments$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/payments\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/payments(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/payments/customers",
+      "regex": "^/projects/([^/]+?)/payments/customers(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/payments/customers(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/payments/customers.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/payments/customers$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/payments/customers\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/payments/customers(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/payments/payouts",
+      "regex": "^/projects/([^/]+?)/payments/payouts(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/payments/payouts(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/payments/payouts.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/payments/payouts$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/payments/payouts\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/payments/payouts(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/payments/product-lines",
+      "regex": "^/projects/([^/]+?)/payments/product\\-lines(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/payments/product\\-lines(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/payments/product-lines.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/payments/product-lines$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/payments/product\\-lines\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/payments/product\\-lines(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/payments/products",
+      "regex": "^/projects/([^/]+?)/payments/products(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/payments/products(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/payments/products.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/payments/products$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/payments/products\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/payments/products(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/payments/products/new",
+      "regex": "^/projects/([^/]+?)/payments/products/new(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/payments/products/new(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/payments/products/new.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/payments/products/new$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/payments/products/new\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/payments/products/new(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/payments/products/[productId]",
+      "regex": "^/projects/([^/]+?)/payments/products/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId",
+        "nxtPproductId": "nxtPproductId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/payments/products/(?<nxtPproductId>[^/]+?)(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/payments/products/[productId].segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/payments/products/$d$productId$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/payments/products/(?<nxtPproductId>[^/]+?)\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/payments/products/\\$d\\$productId(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId",
+            "nxtPproductId": "nxtPproductId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/payments/products/[productId]/edit",
+      "regex": "^/projects/([^/]+?)/payments/products/([^/]+?)/edit(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId",
+        "nxtPproductId": "nxtPproductId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/payments/products/(?<nxtPproductId>[^/]+?)/edit(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/payments/products/[productId]/edit.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/payments/products/$d$productId/edit$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/payments/products/(?<nxtPproductId>[^/]+?)/edit\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/payments/products/\\$d\\$productId/edit(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId",
+            "nxtPproductId": "nxtPproductId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/payments/settings",
+      "regex": "^/projects/([^/]+?)/payments/settings(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/payments/settings(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/payments/settings.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/payments/settings$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/payments/settings\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/payments/settings(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/payments/transactions",
+      "regex": "^/projects/([^/]+?)/payments/transactions(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/payments/transactions(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/payments/transactions.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/payments/transactions$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/payments/transactions\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/payments/transactions(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/platform-analytics",
+      "regex": "^/projects/([^/]+?)/platform\\-analytics(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/platform\\-analytics(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/platform-analytics.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/platform-analytics$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/platform\\-analytics\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/platform\\-analytics(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/project-keys",
+      "regex": "^/projects/([^/]+?)/project\\-keys(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/project\\-keys(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/project-keys.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/project-keys$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/project\\-keys\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/project\\-keys(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/project-permissions",
+      "regex": "^/projects/([^/]+?)/project\\-permissions(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/project\\-permissions(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/project-permissions.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/project-permissions$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/project\\-permissions\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/project\\-permissions(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/project-settings",
+      "regex": "^/projects/([^/]+?)/project\\-settings(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/project\\-settings(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/project-settings.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/project-settings$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/project\\-settings\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/project\\-settings(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/project-settings/secrets",
+      "regex": "^/projects/([^/]+?)/project\\-settings/secrets(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/project\\-settings/secrets(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/project-settings/secrets.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/project-settings/secrets$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/project\\-settings/secrets\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/project\\-settings/secrets(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/project-settings/usage",
+      "regex": "^/projects/([^/]+?)/project\\-settings/usage(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/project\\-settings/usage(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/project-settings/usage.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/project-settings/usage$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/project\\-settings/usage\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/project\\-settings/usage(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/query-analytics",
+      "regex": "^/projects/([^/]+?)/query\\-analytics(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/query\\-analytics(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/query-analytics.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/query-analytics$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/query\\-analytics\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/query\\-analytics(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/session-replays",
+      "regex": "^/projects/([^/]+?)/session\\-replays(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/session\\-replays(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/session-replays.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/session-replays$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/session\\-replays\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/session\\-replays(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/session-replays/[replayId]",
+      "regex": "^/projects/([^/]+?)/session\\-replays/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId",
+        "nxtPreplayId": "nxtPreplayId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/session\\-replays/(?<nxtPreplayId>[^/]+?)(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/session-replays/[replayId].segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/session-replays/$d$replayId$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/session\\-replays/(?<nxtPreplayId>[^/]+?)\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/session\\-replays/\\$d\\$replayId(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId",
+            "nxtPreplayId": "nxtPreplayId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/sign-up-rules",
+      "regex": "^/projects/([^/]+?)/sign\\-up\\-rules(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/sign\\-up\\-rules(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/sign-up-rules.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/sign-up-rules$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/sign\\-up\\-rules\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/sign\\-up\\-rules(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/support",
+      "regex": "^/projects/([^/]+?)/support(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/support(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/support.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/support$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/support\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/support(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/team-permissions",
+      "regex": "^/projects/([^/]+?)/team\\-permissions(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/team\\-permissions(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/team-permissions.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/team-permissions$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/team\\-permissions\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/team\\-permissions(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/team-settings",
+      "regex": "^/projects/([^/]+?)/team\\-settings(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/team\\-settings(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/team-settings.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/team-settings$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/team\\-settings\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/team\\-settings(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/teams",
+      "regex": "^/projects/([^/]+?)/teams(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/teams(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/teams.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/teams$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/teams\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/teams(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/teams/[teamId]",
+      "regex": "^/projects/([^/]+?)/teams/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId",
+        "nxtPteamId": "nxtPteamId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/teams/(?<nxtPteamId>[^/]+?)(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/teams/[teamId].segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/teams/$d$teamId$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/teams/(?<nxtPteamId>[^/]+?)\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/teams/\\$d\\$teamId(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId",
+            "nxtPteamId": "nxtPteamId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/users",
+      "regex": "^/projects/([^/]+?)/users(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/users(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/users.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/users$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/users\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/users(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/users/[userId]",
+      "regex": "^/projects/([^/]+?)/users/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId",
+        "nxtPuserId": "nxtPuserId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/users/(?<nxtPuserId>[^/]+?)(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/users/[userId].segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/users/$d$userId$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/users/(?<nxtPuserId>[^/]+?)\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/users/\\$d\\$userId(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId",
+            "nxtPuserId": "nxtPuserId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/vercel",
+      "regex": "^/projects/([^/]+?)/vercel(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/vercel(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/vercel.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/vercel$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/vercel\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/vercel(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/webhooks",
+      "regex": "^/projects/([^/]+?)/webhooks(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/webhooks(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/webhooks.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/webhooks$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/webhooks\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/webhooks(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/webhooks/[endpointId]",
+      "regex": "^/projects/([^/]+?)/webhooks/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId",
+        "nxtPendpointId": "nxtPendpointId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/webhooks/(?<nxtPendpointId>[^/]+?)(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/webhooks/[endpointId].segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/webhooks/$d$endpointId$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/webhooks/(?<nxtPendpointId>[^/]+?)\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/webhooks/\\$d\\$endpointId(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId",
+            "nxtPendpointId": "nxtPendpointId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/widget-playground",
+      "regex": "^/projects/([^/]+?)/widget\\-playground(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/widget\\-playground(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/widget-playground.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/widget-playground$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/widget\\-playground\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/widget\\-playground(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/workflows",
+      "regex": "^/projects/([^/]+?)/workflows(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/workflows(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/workflows.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/workflows$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/workflows\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/workflows(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/projects/[projectId]/workflows/[workflowId]",
+      "regex": "^/projects/([^/]+?)/workflows/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPprojectId": "nxtPprojectId",
+        "nxtPworkflowId": "nxtPworkflowId"
+      },
+      "namedRegex": "^/projects/(?<nxtPprojectId>[^/]+?)/workflows/(?<nxtPworkflowId>[^/]+?)(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/projects/[projectId]/workflows/[workflowId].segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/$d$projectId/workflows/$d$workflowId$segment",
+          "source": "^/projects/(?<nxtPprojectId>[^/]+?)/workflows/(?<nxtPworkflowId>[^/]+?)\\.segments/!KG1haW4p/!KHByb3RlY3RlZCk/projects/\\$d\\$projectId/workflows/\\$d\\$workflowId(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPprojectId": "nxtPprojectId",
+            "nxtPworkflowId": "nxtPworkflowId"
+          }
+        }
+      ]
+    },
+    {
+      "page": "/purchase/[code]",
+      "regex": "^/purchase/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPcode": "nxtPcode"
+      },
+      "namedRegex": "^/purchase/(?<nxtPcode>[^/]+?)(?:/)?$",
+      "prefetchSegmentDataRoutes": [
+        {
+          "destination": "/purchase/[code].segments/!KG1haW4p/purchase/$d$code$segment",
+          "source": "^/purchase/(?<nxtPcode>[^/]+?)\\.segments/!KG1haW4p/purchase/\\$d\\$code(?<segment>/__PAGE__\\.segment\\.rsc|\\.segment\\.rsc)(?:/)?$",
+          "routeKeys": {
+            "nxtPcode": "nxtPcode"
+          }
+        }
+      ]
+    }
+  ],
+  "staticRoutes": [
+    {
+      "page": "/",
+      "regex": "^/(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/(?:/)?$"
+    },
+    {
+      "page": "/_global-error",
+      "regex": "^/_global\\-error(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_global\\-error(?:/)?$"
+    },
+    {
+      "page": "/_not-found",
+      "regex": "^/_not\\-found(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/api/development-environment/browser-secret/init-confirmation-code",
+      "regex": "^/api/development\\-environment/browser\\-secret/init\\-confirmation\\-code(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/development\\-environment/browser\\-secret/init\\-confirmation\\-code(?:/)?$"
+    },
+    {
+      "page": "/api/development-environment/browser-secret/start-localbound-server",
+      "regex": "^/api/development\\-environment/browser\\-secret/start\\-localbound\\-server(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/development\\-environment/browser\\-secret/start\\-localbound\\-server(?:/)?$"
+    },
+    {
+      "page": "/api/development-environment/browser-secret/store",
+      "regex": "^/api/development\\-environment/browser\\-secret/store(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/development\\-environment/browser\\-secret/store(?:/)?$"
+    },
+    {
+      "page": "/api/development-environment/browser-secret/submit-confirmation-code",
+      "regex": "^/api/development\\-environment/browser\\-secret/submit\\-confirmation\\-code(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/development\\-environment/browser\\-secret/submit\\-confirmation\\-code(?:/)?$"
+    },
+    {
+      "page": "/api/development-environment/health",
+      "regex": "^/api/development\\-environment/health(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/development\\-environment/health(?:/)?$"
+    },
+    {
+      "page": "/api/development-environment/project-availability",
+      "regex": "^/api/development\\-environment/project\\-availability(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/development\\-environment/project\\-availability(?:/)?$"
+    },
+    {
+      "page": "/api/development-environment/projects",
+      "regex": "^/api/development\\-environment/projects(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/development\\-environment/projects(?:/)?$"
+    },
+    {
+      "page": "/api/remote-development-environment/auth",
+      "regex": "^/api/remote\\-development\\-environment/auth(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/remote\\-development\\-environment/auth(?:/)?$"
+    },
+    {
+      "page": "/api/remote-development-environment/config/apply-update",
+      "regex": "^/api/remote\\-development\\-environment/config/apply\\-update(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/remote\\-development\\-environment/config/apply\\-update(?:/)?$"
+    },
+    {
+      "page": "/api/remote-development-environment/sessions",
+      "regex": "^/api/remote\\-development\\-environment/sessions(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/remote\\-development\\-environment/sessions(?:/)?$"
+    },
+    {
+      "page": "/api/viewer-location",
+      "regex": "^/api/viewer\\-location(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/viewer\\-location(?:/)?$"
+    },
+    {
+      "page": "/development-environment/browser-secret",
+      "regex": "^/development\\-environment/browser\\-secret(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/development\\-environment/browser\\-secret(?:/)?$"
+    },
+    {
+      "page": "/favicon.ico",
+      "regex": "^/favicon\\.ico(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/favicon\\.ico(?:/)?$"
+    },
+    {
+      "page": "/health",
+      "regex": "^/health(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/health(?:/)?$"
+    },
+    {
+      "page": "/health/error-handler-debug",
+      "regex": "^/health/error\\-handler\\-debug(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/health/error\\-handler\\-debug(?:/)?$"
+    },
+    {
+      "page": "/health/error-handler-debug/endpoint",
+      "regex": "^/health/error\\-handler\\-debug/endpoint(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/health/error\\-handler\\-debug/endpoint(?:/)?$"
+    },
+    {
+      "page": "/integrations/custom/confirm",
+      "regex": "^/integrations/custom/confirm(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/integrations/custom/confirm(?:/)?$"
+    },
+    {
+      "page": "/integrations/custom/projects/transfer/confirm",
+      "regex": "^/integrations/custom/projects/transfer/confirm(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/integrations/custom/projects/transfer/confirm(?:/)?$"
+    },
+    {
+      "page": "/integrations/featurebase/sso",
+      "regex": "^/integrations/featurebase/sso(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/integrations/featurebase/sso(?:/)?$"
+    },
+    {
+      "page": "/integrations/neon/confirm",
+      "regex": "^/integrations/neon/confirm(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/integrations/neon/confirm(?:/)?$"
+    },
+    {
+      "page": "/integrations/neon/projects/transfer/confirm",
+      "regex": "^/integrations/neon/projects/transfer/confirm(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/integrations/neon/projects/transfer/confirm(?:/)?$"
+    },
+    {
+      "page": "/llms-full.txt",
+      "regex": "^/llms\\-full\\.txt(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/llms\\-full\\.txt(?:/)?$"
+    },
+    {
+      "page": "/llms.txt",
+      "regex": "^/llms\\.txt(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/llms\\.txt(?:/)?$"
+    },
+    {
+      "page": "/new-project",
+      "regex": "^/new\\-project(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/new\\-project(?:/)?$"
+    },
+    {
+      "page": "/playground",
+      "regex": "^/playground(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/playground(?:/)?$"
+    },
+    {
+      "page": "/projects",
+      "regex": "^/projects(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/projects(?:/)?$"
+    },
+    {
+      "page": "/purchase/return",
+      "regex": "^/purchase/return(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/purchase/return(?:/)?$"
+    },
+    {
+      "page": "/rde-debug",
+      "regex": "^/rde\\-debug(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/rde\\-debug(?:/)?$"
+    },
+    {
+      "page": "/robots.txt",
+      "regex": "^/robots\\.txt(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/robots\\.txt(?:/)?$"
+    },
+    {
+      "page": "/wizard-congrats",
+      "regex": "^/wizard\\-congrats(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/wizard\\-congrats(?:/)?$"
+    }
+  ],
+  "dataRoutes": [],
+  "rsc": {
+    "header": "rsc",
+    "varyHeader": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+    "prefetchHeader": "next-router-prefetch",
+    "didPostponeHeader": "x-nextjs-postponed",
+    "contentTypeHeader": "text/x-component",
+    "suffix": ".rsc",
+    "prefetchSegmentHeader": "next-router-segment-prefetch",
+    "prefetchSegmentSuffix": ".segment.rsc",
+    "prefetchSegmentDirSuffix": ".segments",
+    "clientParamParsing": true,
+    "dynamicRSCPrerender": true
+  },
+  "rewriteHeaders": {
+    "pathHeader": "x-nextjs-rewritten-path",
+    "queryHeader": "x-nextjs-rewritten-query"
+  },
+  "ppr": {
+    "chain": {
+      "headers": {
+        "next-resume": "1"
+      }
+    }
+  }
+}

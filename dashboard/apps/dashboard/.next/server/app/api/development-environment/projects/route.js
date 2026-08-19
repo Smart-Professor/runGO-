@@ -1,0 +1,12 @@
+var R=require("../../../../chunks/[turbopack]_runtime.js")("server/app/api/development-environment/projects/route.js")
+R.c("server/chunks/apps_dashboard_src_lib_remote-development-environment_manager_ts_056sy_7._.js")
+R.c("server/chunks/apps_dashboard_src_lib_remote-development-environment_06ss863._.js")
+R.c("server/chunks/[root-of-the-server]__1eaevlm._.js")
+R.c("server/chunks/packages_shared_dist_esm_utils_0raomla._.js")
+R.c("server/chunks/_0da1po8._.js")
+R.c("server/chunks/[root-of-the-server]__03_l3be._.js")
+R.c("server/chunks/[root-of-the-server]__0v3dln4._.js")
+R.c("server/chunks/0cc2_next_0q63hky._.js")
+R.c("server/chunks/0uzl_server_app_api_development-environment_projects_route_actions_09q77mp.js")
+R.m(462591)
+module.exports=R.m(462591).exports

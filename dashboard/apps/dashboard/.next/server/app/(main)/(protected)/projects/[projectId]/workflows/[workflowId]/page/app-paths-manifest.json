@@ -1,0 +1,3 @@
+{
+  "/(main)/(protected)/projects/[projectId]/workflows/[workflowId]/page": "app/(main)/(protected)/projects/[projectId]/workflows/[workflowId]/page.js"
+}

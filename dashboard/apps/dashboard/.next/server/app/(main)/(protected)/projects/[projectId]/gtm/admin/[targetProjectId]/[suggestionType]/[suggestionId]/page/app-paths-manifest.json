@@ -1,0 +1,3 @@
+{
+  "/(main)/(protected)/projects/[projectId]/gtm/admin/[targetProjectId]/[suggestionType]/[suggestionId]/page": "app/(main)/(protected)/projects/[projectId]/gtm/admin/[targetProjectId]/[suggestionType]/[suggestionId]/page.js"
+}

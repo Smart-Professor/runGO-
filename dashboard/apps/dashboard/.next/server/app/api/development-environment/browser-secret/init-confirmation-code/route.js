@@ -1,0 +1,11 @@
+var R=require("../../../../../chunks/[turbopack]_runtime.js")("server/app/api/development-environment/browser-secret/init-confirmation-code/route.js")
+R.c("server/chunks/[root-of-the-server]__1sakwep._.js")
+R.c("server/chunks/0cc2_next_0r1aoqk._.js")
+R.c("server/chunks/apps_dashboard_src_lib_remote-development-environment_06ss863._.js")
+R.c("server/chunks/_0da1po8._.js")
+R.c("server/chunks/[root-of-the-server]__03_l3be._.js")
+R.c("server/chunks/packages_shared_dist_esm_utils_0raomla._.js")
+R.c("server/chunks/[root-of-the-server]__1eaevlm._.js")
+R.c("server/chunks/0-48_elopment-environment_browser-secret_init-confirmation-code_route_actions_1a00yhz.js")
+R.m(965862)
+module.exports=R.m(965862).exports

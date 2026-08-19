@@ -1,0 +1,3 @@
+module.exports=[560285,a=>{"use strict";var b=a.i(340139),c=a.i(643599),d=a.i(98296),e=a.i(419931),f=a.i(779438);a.s(["default",0,function(){let a=(0,c.useCallback)(a=>"programmatic-call"===a.createdWith&&!a.emailProgrammaticCallTemplateId||"draft"===a.createdWith&&!a.emailDraftId,[]);return(0,b.jsx)(d.AppEnabledGuard,{appId:"emails",children:(0,b.jsx)(e.PageLayout,{title:"Sent: No Template/Draft",children:(0,b.jsx)(f.SentEmailsView,{filterFn:a})})})}])}];
+
+//# sourceMappingURL=19ck_%28protected%29_projects_%5BprojectId%5D_email-sent_no-source_page-client_tsx_1ntpduy._.js.map
