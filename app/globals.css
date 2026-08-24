@@ -271,6 +271,85 @@ body {
   background: var(--bg-soft); border: 1px solid var(--line);
   font-size: 0.85rem; font-weight: 600; color: var(--fg);
 }
+.avatar-btn {
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16,1,0.3,1);
+  box-shadow: 0 0 0 0 rgba(0,0,0,0.0);
+}
+.avatar-btn:hover {
+  border-color: #0a0a0a;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px -8px rgba(0,0,0,0.35);
+}
+.avatar-btn:active { transform: translateY(0); }
+
+/* =========================================================
+   User Dropdown Menu（头像下拉菜单）
+   - 依赖父容器 .relative 做 absolute 定位
+   - 顶部尖角用 ::before 伪元素
+   - 出场用 fade-in-drop 动画避免生硬弹出
+   ========================================================= */
+@keyframes fade-in-drop {
+  from { opacity: 0; transform: translateY(-8px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.user-menu {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  min-width: 240px;
+  z-index: 80;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 0.5rem;
+  box-shadow: 0 20px 50px -12px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.02);
+  animation: fade-in-drop 0.18s cubic-bezier(0.16,1,0.3,1);
+  /* 尖角箭头（指向头像按钮）*/
+}
+.user-menu::before {
+  content: "";
+  position: absolute;
+  top: -7px; right: 14px;
+  width: 13px; height: 13px;
+  background: #ffffff;
+  border-left: 1px solid var(--line);
+  border-top: 1px solid var(--line);
+  transform: rotate(45deg);
+  border-radius: 2px;
+}
+.user-menu-head {
+  display: flex; align-items: center; gap: 0.7rem;
+  padding: 0.65rem 0.6rem 0.75rem;
+  border-radius: 10px;
+}
+.user-menu-sep {
+  height: 1px;
+  background: var(--line-soft);
+  margin: 0.35rem 0.25rem;
+}
+.user-menu-item {
+  display: flex; align-items: center; gap: 0.7rem;
+  width: 100%;
+  padding: 0.55rem 0.65rem;
+  border-radius: 9px;
+  color: var(--fg);
+  text-align: left;
+  font-size: 0.875rem;
+  line-height: 1.3rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+.user-menu-item:hover {
+  background: var(--bg-soft);
+  transform: translateX(1px);
+}
+.user-menu-item svg { flex-shrink: 0; }
+.user-menu-danger { color: #dc2626; }
+.user-menu-danger:hover { background: #fef2f2; color: #b91c1c; }
 
 /* =========================================================
    Chip filter
@@ -1553,6 +1632,16 @@ html.dark .user-menu {
   background: var(--bg-card);
   border-color: var(--line);
   box-shadow: 0 20px 50px -12px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.04);
+}
+/* 尖角箭头在深色下的颜色 */
+html.dark .user-menu::before {
+  background: var(--bg-card);
+  border-left-color: var(--line);
+  border-top-color: var(--line);
+}
+html.dark .avatar-btn:hover {
+  border-color: #ededed;
+  box-shadow: 0 6px 18px -8px rgba(255,255,255,0.25);
 }
 html.dark .user-menu-sep { background: var(--line); }
 html.dark .user-menu-item { color: var(--fg); }

@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { createClient } from "@/lib/supabase/client"
 import type { User } from "@supabase/supabase-js"
 import { useUserPoints } from "@/lib/points/UserPointsContext"
@@ -15,6 +15,8 @@ export default function Nav() {
   const router = useRouter()
   const supabase = createClient()
   const { points, loading: pointsLoading } = useUserPoints()
+  /** 包着(头像按钮 + 下拉菜单)的容器，用于 click-outside 判断 */
+  const menuWrapRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     const getUser = async () => {
@@ -24,6 +26,32 @@ export default function Nav() {
     }
     getUser()
   }, [supabase])
+
+  /**
+   * 点击菜单外部 / 按 Esc 键 → 关闭下拉
+   * 使用 pointerdown + capture 保证比任何子元素 click 处理更早触发，
+   * 避免因为 stopPropagation 导致无法关闭。
+   */
+  useEffect(() => {
+    if (!menuOpen) return
+
+    const onPointerDown = (e: PointerEvent) => {
+      const wrap = menuWrapRef.current
+      if (wrap && !wrap.contains(e.target as Node)) {
+        setMenuOpen(false)
+      }
+    }
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMenuOpen(false)
+    }
+
+    document.addEventListener("pointerdown", onPointerDown, true)
+    document.addEventListener("keydown", onKeyDown, true)
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown, true)
+      document.removeEventListener("keydown", onKeyDown, true)
+    }
+  }, [menuOpen])
 
   const handleSignOut = async () => {
     setMenuOpen(false)
@@ -82,8 +110,12 @@ export default function Nav() {
                     <span>{!pointsLoading ? points.toLocaleString() : "..."}</span>
                     <span className="tx-soft" style={{ fontSize: "0.7rem", fontWeight: 500 }}>积分</span>
                   </Link>
-                  <div className="relative">
+                  <div className="relative" ref={menuWrapRef}>
                     <button
+                      type="button"
+                      aria-haspopup="menu"
+                      aria-expanded={menuOpen}
+                      aria-label="打开用户菜单"
                       onClick={() => setMenuOpen((v) => !v)}
                       className="flex items-center gap-2"
                     >
