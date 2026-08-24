@@ -1400,4 +1400,463 @@ body {
   font-weight: 700;
 }
 
+/* =========================================================
+   Dark Theme — 柔和深灰护眼版 (夜间不刺眼)
+   核心配色：
+     背景  #0f0f11  (暖灰，避免纯蓝纯黑伤眼)
+     卡片  #17171a
+     软底  #1d1d21
+     主文  #ededed  (93%白，避免纯白发亮)
+     次文  #a1a1aa  (63%)
+     弱文  #71717a  (44%)
+     边框  #2a2a2e  / 软边 #1f1f22
+   切换方式：<html class="dark"> 或 data-theme="dark"
+   ========================================================= */
+html.dark {
+  color-scheme: dark;
+}
+html.dark body {
+  background: #0f0f11;
+  color: #ededed;
+}
+
+/* ---- Tailwind v4 主题变量对齐 ---- */
+html.dark {
+  --color-background: #0f0f11;
+  --color-foreground: #ededed;
+}
+
+/* ---- 核心变量 ---- */
+html.dark,
+:root.dark {
+  --bg: #0f0f11;
+  --bg-card: #17171a;
+  --bg-soft: #1d1d21;
+  --fg: #ededed;
+  --fg-muted: #a1a1aa;
+  --fg-soft: #71717a;
+  --line: #2a2a2e;
+  --line-soft: #1f1f22;
+  --accent: #ededed;
+  --selection-bg: #e5e5e5;
+  --selection-text: #0a0a0a;
+  --scroll-thumb: rgba(255,255,255,0.12);
+  --scroll-thumb-hover: rgba(255,255,255,0.22);
+  --nav-shadow: 0 1px 0 rgba(255,255,255,0.04), 0 0 20px rgba(0,0,0,0.35);
+  --card-shadow: 0 1px 0 rgba(255,255,255,0.03) inset, 0 1px 2px rgba(0,0,0,0.4);
+  --card-shadow-hover: 0 20px 50px -20px rgba(0,0,0,0.7), 0 1px 0 rgba(255,255,255,0.05) inset;
+}
+
+html.dark .accent-logo { background: #ededed; }
+html.dark .bar-dark      { background: #ededed; }
+html.dark .pulse-dot     { background: #ededed; }
+html.dark .mock-sb-active{ background: #ededed; }
+html.dark .chip-active   { background: #ededed !important; color: #0a0a0a !important; border-color: transparent !important; }
+html.dark .badge         { background: #ededed; color: #0a0a0a; }
+html.dark .toggle-on     { background: #ededed !important; }
+html.dark .dash-bar-u    { background: #ededed; }
+html.dark .dash-style-bar > div { background: linear-gradient(90deg, #71717a 0%, #ededed 100%); }
+
+/* ---- 滚动条 ---- */
+html.dark ::selection { background: var(--selection-bg); color: var(--selection-text); }
+html.dark ::-webkit-scrollbar-track { background: var(--bg); }
+
+/* ---- 导航栏：深色下半透明黑 ---- */
+html.dark .nav-bar {
+  background: rgba(15, 15, 17, 0.82);
+  border-bottom-color: var(--line-soft);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.04), 0 10px 30px -10px rgba(0,0,0,0.6);
+}
+
+/* ---- 按钮：反色，深色下白底黑字更清晰 ---- */
+html.dark .btn-primary {
+  background: #ededed;
+  color: #0a0a0a;
+}
+html.dark .btn-primary:hover {
+  background: #ffffff;
+  box-shadow: 0 4px 20px -4px rgba(255,255,255,0.25);
+}
+html.dark .btn-secondary { background: #ededed; color: #0a0a0a; }
+html.dark .btn-secondary:hover { background: #ffffff; }
+html.dark .btn-outline {
+  border-color: var(--line);
+  color: var(--fg);
+}
+html.dark .btn-outline:hover {
+  border-color: #ededed;
+  background: rgba(255,255,255,0.04);
+}
+
+/* ---- 卡片 / pricing ---- */
+html.dark .card { background: var(--bg-card); border-color: var(--line); box-shadow: var(--card-shadow); }
+html.dark .card-hover:hover {
+  border-color: #3a3a40;
+  box-shadow: var(--card-shadow-hover);
+}
+html.dark .pricing-featured {
+  border-color: #ededed !important;
+  box-shadow: 0 20px 60px -20px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.08);
+}
+html.dark .badge-soft {
+  background: var(--bg-soft);
+  color: var(--fg-muted);
+  border-color: var(--line);
+}
+
+/* ---- mockup / 图表 ---- */
+html.dark .mock-window { border-color: var(--line); box-shadow: 0 30px 80px -30px rgba(0,0,0,0.8); }
+html.dark .mock-titlebar { background: var(--bg-soft); border-bottom-color: var(--line); }
+html.dark .mock-sidebar   { background: var(--bg-soft); border-right-color: var(--line); }
+html.dark .mock-sb-item   { background: var(--line); }
+html.dark .mock-stat { background: var(--bg-card); border-color: var(--line); }
+html.dark .bar { background: var(--line); }
+html.dark .mq-sep { color: rgba(255,255,255,0.18); }
+
+/* ---- FAQ ---- */
+html.dark .faq-item { border-bottom-color: var(--line); }
+
+/* ---- Avatar / Chip ---- */
+html.dark .avatar {
+  background: linear-gradient(135deg, #1d1d21, #2a2a2e);
+  border-color: var(--line);
+  color: var(--fg);
+}
+html.dark .chip {
+  border-color: var(--line);
+  color: var(--fg-muted);
+  background: transparent;
+}
+html.dark .chip:hover {
+  border-color: #ededed;
+  color: var(--fg);
+  background: rgba(255,255,255,0.03);
+}
+
+/* ---- 积分徽章：深色下金色更明显 ---- */
+html.dark .points-badge {
+  background: var(--bg-card);
+  border-color: var(--line);
+  color: var(--fg);
+}
+html.dark .points-badge:hover {
+  background: var(--bg-soft);
+  border-color: #d4af37;
+}
+html.dark .points-icon-gold {
+  background: linear-gradient(135deg, #d4af37 0%, #ffe082 100%);
+  color: #4a2e00;
+}
+
+/* ---- 用户菜单 ---- */
+html.dark .user-menu {
+  background: var(--bg-card);
+  border-color: var(--line);
+  box-shadow: 0 20px 50px -12px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.04);
+}
+html.dark .user-menu-sep { background: var(--line); }
+html.dark .user-menu-item { color: var(--fg); }
+html.dark .user-menu-item:hover { background: var(--bg-soft); }
+html.dark .user-menu-danger { color: #fca5a5; }
+html.dark .user-menu-danger:hover { background: rgba(220,38,38,0.12); color: #ef4444; }
+
+/* ---- 表单 / 输入框 / 下拉 ---- */
+html.dark .filter-input,
+html.dark .filter-select {
+  background: var(--bg-card);
+  border-color: var(--line);
+  color: var(--fg);
+}
+html.dark .filter-input::placeholder { color: #5a5a62; }
+html.dark .filter-input:focus,
+html.dark .filter-select:focus {
+  border-color: #ededed;
+  box-shadow: 0 0 0 3px rgba(255,255,255,0.08);
+}
+html.dark .filter-select {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23a1a1aa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+}
+
+html.dark .input-field {
+  background: var(--bg-card) !important;
+  border-color: var(--line) !important;
+  color: var(--fg) !important;
+}
+html.dark .input-field::placeholder { color: #5a5a62 !important; }
+html.dark .input-field:focus {
+  border-color: #ededed !important;
+  box-shadow: 0 0 0 3px rgba(255,255,255,0.08) !important;
+}
+
+/* ---- Auth Card / 登录框 ---- */
+html.dark .auth-card {
+  background: var(--bg-card);
+  border-color: var(--line);
+  box-shadow: 0 40px 80px -30px rgba(0,0,0,0.8);
+}
+html.dark .auth-divider::before,
+html.dark .auth-divider::after { background: var(--line); }
+html.dark .auth-divider { color: var(--fg-muted); }
+html.dark .oauth-btn {
+  background: var(--bg-soft);
+  border-color: var(--line);
+  color: var(--fg);
+}
+html.dark .oauth-btn:hover { background: #232328; border-color: #3a3a40; }
+
+/* ---- Toast 通知 ---- */
+html.dark .toast {
+  background: #1d1d21;
+  border: 1px solid var(--line);
+  color: var(--fg);
+  box-shadow: 0 20px 40px -10px rgba(0,0,0,0.6);
+}
+html.dark .toast-success {
+  background: #052e16 !important;
+  border-color: #14532d !important;
+  color: #bbf7d0 !important;
+}
+html.dark .toast-error {
+  background: #450a0a !important;
+  border-color: #7f1d1d !important;
+  color: #fecaca !important;
+}
+html.dark .toast-info {
+  background: #0c1d36 !important;
+  border-color: #1e3a8a !important;
+  color: #bfdbfe !important;
+}
+
+/* ---- Modal 通用 ---- */
+html.dark .modal-backdrop { background: rgba(0,0,0,0.75); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+html.dark .modal-content {
+  background: var(--bg-card);
+  border-color: var(--line);
+  color: var(--fg);
+  box-shadow: 0 40px 100px -20px rgba(0,0,0,0.85);
+}
+html.dark .modal-content .chip { color: var(--fg-muted); }
+html.dark .modal-content .chip.chip-active { color: #0a0a0a !important; }
+
+/* ---- Viewer 大图查看 ---- */
+html.dark .viewer-modal { background: rgba(0,0,0,0.85); }
+html.dark .viewer-inner { background: var(--bg-card); border: 1px solid var(--line); }
+html.dark .viewer-close { background: rgba(255,255,255,0.1); color: #ededed; }
+html.dark .viewer-close:hover { background: #ededed; color: #0a0a0a; }
+html.dark .viewer-left { background: #0a0a0a; }
+html.dark .viewer-prompt { background: var(--bg-soft); color: var(--fg); }
+html.dark .viewer-meta-row { border-bottom-color: var(--line-soft); }
+
+/* ---- Gallery ---- */
+html.dark .gallery-hero,
+html.dark .dashboard-hero { border-color: var(--line); }
+html.dark .gallery-empty img { opacity: 0.8; filter: grayscale(0.2) brightness(0.9); }
+html.dark .gallery-card {
+  background: var(--bg-card);
+  border-color: var(--line);
+}
+html.dark .gallery-card:hover {
+  border-color: #3a3a40;
+  box-shadow: 0 24px 60px -20px rgba(0,0,0,0.7);
+}
+html.dark .gallery-prompt { color: var(--fg); }
+html.dark .ga-btn {
+  background: rgba(20,20,23,0.9);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid var(--line);
+  color: var(--fg);
+}
+html.dark .ga-btn:hover {
+  background: #ededed;
+  color: #0a0a0a;
+  border-color: transparent;
+}
+html.dark .ga-danger:hover { background: #dc2626; color: #fff; }
+html.dark .chip-dark {
+  background: rgba(20,20,23,0.88);
+  color: #ededed;
+  border: 1px solid var(--line);
+}
+html.dark .gallery-tabs { border-bottom-color: var(--line); }
+html.dark .gallery-tab { color: var(--fg-muted); border-bottom-color: transparent; }
+html.dark .gallery-tab:hover { color: var(--fg); }
+html.dark .gallery-tab-active { color: var(--fg); border-bottom-color: #ededed; }
+html.dark .gallery-tab-count { background: var(--bg-soft); color: var(--fg-muted); }
+html.dark .gallery-tab-active .gallery-tab-count { background: #ededed; color: #0a0a0a; }
+
+html.dark .badge-gold {
+  background: linear-gradient(135deg, #f4e4a6 0%, #fde68a 100%);
+  color: #422006;
+}
+html.dark .badge-green {
+  background: #052e16;
+  color: #86efac;
+  border: 1px solid #166534;
+}
+
+/* ---- Aspect selector ---- */
+html.dark .aspect-option {
+  background: var(--bg-card);
+  border-color: var(--line);
+}
+html.dark .aspect-option:hover { border-color: #3a3a40; }
+html.dark .aspect-selected {
+  border-color: #ededed;
+  background: rgba(255,255,255,0.04);
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.08);
+}
+html.dark .aspect-thumb-inner { background: var(--line); }
+html.dark .aspect-selected .aspect-thumb-inner { background: #ededed; }
+html.dark .aspect-label { color: var(--fg-muted); }
+html.dark .aspect-selected .aspect-label { color: var(--fg); }
+
+/* ---- Gen page ---- */
+html.dark .gen-preview {
+  background: linear-gradient(135deg, #1d1d21, #0f0f11);
+  border-color: var(--line);
+}
+html.dark .quality-option {
+  background: var(--bg-card);
+  border-color: var(--line);
+}
+html.dark .quality-option:hover { border-color: #3a3a40; }
+html.dark .quality-selected {
+  border-color: #ededed;
+  background: rgba(255,255,255,0.04);
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.08);
+}
+html.dark .template-card {
+  background: var(--bg-card);
+  border-color: var(--line);
+}
+html.dark .template-card:hover {
+  border-color: #3a3a40;
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px -16px rgba(0,0,0,0.6);
+}
+html.dark .history-item {
+  background: var(--bg-soft);
+  border-color: var(--line);
+}
+html.dark .hist-empty {
+  color: var(--fg-soft);
+  background: var(--bg-soft);
+  border-color: var(--line);
+  border-style: dashed;
+}
+
+/* ---- Dashboard ---- */
+html.dark .dash-card {
+  background: var(--bg-card);
+  border-color: var(--line);
+}
+html.dark .dash-card:hover {
+  border-color: #3a3a40;
+  box-shadow: 0 20px 40px -20px rgba(0,0,0,0.6);
+}
+html.dark .dash-cta { color: var(--fg-muted); }
+html.dark .dash-cta:hover { color: var(--fg); }
+html.dark .dash-divider { background: var(--line); }
+html.dark .dash-txn:hover { background: var(--bg-soft); }
+html.dark .dash-recent-item {
+  background-color: var(--bg-soft);
+  border-color: var(--line);
+}
+html.dark .dash-qlink {
+  background: var(--bg);
+  border-color: var(--line);
+  color: var(--fg);
+}
+html.dark .dash-qlink:hover {
+  background: var(--fg);
+  color: #0a0a0a;
+  border-color: transparent;
+}
+html.dark .toggle {
+  background: var(--line);
+}
+
+/* ---- Recharge page ---- */
+html.dark .recharge-hero {
+  background: linear-gradient(135deg, #17171a 0%, #0f0f11 100%);
+  border-color: var(--line);
+}
+html.dark .pkg-card {
+  background: var(--bg-card);
+  border-color: var(--line);
+}
+html.dark .pkg-card:hover {
+  border-color: #3a3a40;
+  box-shadow: 0 24px 50px -20px rgba(0,0,0,0.6);
+}
+html.dark .pkg-popular {
+  border-color: #ededed;
+  box-shadow: 0 0 0 1px #ededed, 0 30px 70px -20px rgba(255,255,255,0.12);
+}
+html.dark .pkg-badge {
+  background: linear-gradient(135deg, #ededed, #fff);
+  color: #0a0a0a;
+}
+html.dark .record-table th {
+  background: var(--bg-soft);
+  color: var(--fg-muted);
+  border-bottom-color: var(--line);
+}
+html.dark .record-table td { border-bottom-color: var(--line-soft); }
+html.dark .record-tr:hover { background: rgba(255,255,255,0.03); }
+
+/* ---- Home page CTA sections ---- */
+html.dark .cta-section {
+  background: linear-gradient(180deg, var(--bg) 0%, #17171a 100%);
+  border-top-color: var(--line);
+  border-bottom-color: var(--line);
+}
+html.dark .stats-band {
+  background: var(--bg-soft);
+  border-color: var(--line);
+}
+
+/* ---- Section header / feature cards ---- */
+html.dark .gen-card {
+  background: var(--bg-card);
+  border-color: var(--line);
+}
+html.dark .gen-card:hover {
+  border-color: #ededed;
+  box-shadow: 0 28px 80px -30px rgba(0,0,0,0.8);
+}
+html.dark .gen-card-mask {
+  background: linear-gradient(135deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.7) 100%);
+}
+html.dark .feature-card {
+  background: var(--bg-card);
+  border-color: var(--line);
+}
+html.dark .feature-card:hover {
+  border-color: #3a3a40;
+  box-shadow: 0 16px 40px -12px rgba(0,0,0,0.5);
+}
+
+/* ---- Theme 切换按钮 (Nav里的太阳/月亮) ---- */
+.theme-toggle {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--bg-card);
+  color: var(--fg);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16,1,0.3,1);
+}
+.theme-toggle:hover {
+  border-color: var(--fg);
+  background: var(--bg-soft);
+  transform: rotate(-8deg);
+}
+html.dark .theme-toggle:hover { transform: rotate(8deg); }
+.theme-toggle svg { width: 17px; height: 17px; }
+
 

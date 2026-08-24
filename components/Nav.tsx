@@ -6,6 +6,7 @@ import { useEffect, useState } from "react"
 import { createClient } from "@/lib/supabase/client"
 import type { User } from "@supabase/supabase-js"
 import { useUserPoints } from "@/lib/points/UserPointsContext"
+import ThemeToggle from "@/components/ThemeToggle"
 
 export default function Nav() {
   const [user, setUser] = useState<User | null>(null)
@@ -71,6 +72,7 @@ export default function Nav() {
             <Link href="/#pricing" className="link-underline transition hover:tx-foreground">Pricing</Link>
           </div>
           <div className="flex items-center gap-3">
+            <ThemeToggle />
             {!loading && (
               user ? (
                 <>
