@@ -5,6 +5,7 @@ import Link from "next/link"
 import Nav from "@/components/Nav"
 import { useUserPoints } from "@/lib/points/UserPointsContext"
 import { useToast } from "@/components/Toast"
+import { useI18n } from "@/lib/i18n/I18nContext"
 import type { GenerationRecord, ImageStyle } from "@/lib/points/system"
 import { IMAGE_STYLES, ASPECT_RATIOS } from "@/lib/points/system"
 
@@ -18,6 +19,7 @@ const QUALITY_LABEL: Record<string, string> = {
 }
 
 export default function GalleryPage() {
+  const { t } = useI18n()
   const {
     activeGenerations,
     favoriteGenerations,
@@ -114,9 +116,9 @@ export default function GalleryPage() {
     s && s !== "auto" ? IMAGE_STYLES.find((x) => x.value === s)?.label || s : "自动"
 
   const tabs: { key: Tab; label: string; count: number }[] = [
-    { key: "all",      label: "全部作品", count: activeGenerations.length },
-    { key: "favorite", label: "我的收藏", count: favoriteGenerations.length },
-    { key: "trash",    label: "回收站",   count: deletedGenerations.length },
+    { key: "all",      label: t('gallery.tabAll'),      count: activeGenerations.length },
+    { key: "favorite", label: t('gallery.tabFavorites'), count: favoriteGenerations.length },
+    { key: "trash",    label: t('gallery.tabTrashed'),   count: deletedGenerations.length },
   ]
 
   return (
@@ -132,9 +134,9 @@ export default function GalleryPage() {
                   <span className="inline-block w-1 h-1 rounded-full accent-logo" />
                   MY GALLERY
                 </div>
-                <h1 className="section-title mb-2">我的作品库</h1>
+                <h1 className="section-title mb-2">{t('gallery.title')}</h1>
                 <p className="section-subtitle">
-                  管理所有使用 AI 生成的图片，支持收藏、下载、分享、删除与恢复。
+                  {t('gallery.subtitle')}
                 </p>
               </div>
               <div className="flex items-center gap-2">
@@ -160,7 +162,7 @@ export default function GalleryPage() {
             <div className="gallery-hero-mask" />
             <div className="gallery-hero-content">
               <h2 className="text-xl md:text-2xl font-semibold text-white mb-1.5">
-                已有 {activeGenerations.length} 件作品
+                {t('gallery.resultCount', { count: list.length })}
               </h2>
               <p className="text-sm text-white/80 max-w-xl">
                 共收藏 {favoriteGenerations.length} 张 · 累计消耗 {activeGenerations.reduce((s, r) => s + r.cost, 0)} 积分 · 回收站 {deletedGenerations.length} 张
@@ -170,14 +172,14 @@ export default function GalleryPage() {
 
           {/* Tabs */}
           <div className="gallery-tabs mb-5 fade-up delay-2">
-            {tabs.map((t) => (
+            {tabs.map((tabItem) => (
               <button
-                key={t.key}
-                className={`gallery-tab ${tab === t.key ? "gallery-tab-active" : ""}`}
-                onClick={() => setTab(t.key)}
+                key={tabItem.key}
+                className={`gallery-tab ${tab === tabItem.key ? "gallery-tab-active" : ""}`}
+                onClick={() => setTab(tabItem.key)}
               >
-                {t.label}
-                <span className="gallery-tab-count">{t.count}</span>
+                {tabItem.label}
+                <span className="gallery-tab-count">{tabItem.count}{t('gallery.tabCount')}</span>
               </button>
             ))}
           </div>
@@ -193,7 +195,7 @@ export default function GalleryPage() {
                 <input
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  placeholder="搜索 prompt 关键词..."
+                  placeholder={t('gallery.searchPlaceholder')}
                   className="filter-input pl-9"
                 />
               </div>
@@ -208,9 +210,9 @@ export default function GalleryPage() {
                 {IMAGE_STYLES.map((s) => (<option key={s.value} value={s.value}>{s.label}</option>))}
               </select>
               <select value={sort} onChange={(e) => setSort(e.target.value as SortKey)} className="filter-select">
-                <option value="newest">最新创建</option>
-                <option value="oldest">最早创建</option>
-                <option value="cost">消耗积分</option>
+                <option value="newest">{t('gallery.sortNewest')}</option>
+                <option value="oldest">{t('gallery.sortOldest')}</option>
+                <option value="cost">{t('gallery.sortExpensive')}</option>
               </select>
             </div>
           </div>
@@ -226,15 +228,15 @@ export default function GalleryPage() {
             <div className="gallery-empty fade-up">
               <img src="/images/empty-gallery.jpg" alt="empty" />
               <h3 className="text-lg font-semibold mt-4 mb-1 tx-foreground">
-                {tab === "trash" ? "回收站是空的" : tab === "favorite" ? "还没有收藏作品" : "还没有生成任何作品"}
+                {tab === "trash" ? t('gallery.emptyTrash') : tab === "favorite" ? t('gallery.emptyFav') : t('gallery.empty')}
               </h3>
               <p className="text-sm tx-muted mb-5 max-w-md mx-auto">
-                {tab === "all" && "前往创作工作台，输入描述即可生成第一张 AI 图片。"}
-                {tab === "favorite" && "在作品卡片上点击「心形」按钮，即可收藏喜欢的图片。"}
-                {tab === "trash" && "删除的作品会在这里保留 30 天，可以随时恢复或彻底删除。"}
+                {tab === "all" && t('gallery.emptyDesc')}
+                {tab === "favorite" && t('gallery.emptyFavDesc')}
+                {tab === "trash" && t('gallery.emptyTrashDesc')}
               </p>
               <Link href="/generate" className="btn-primary px-6 py-2.5 text-sm font-semibold no-underline inline-flex items-center gap-1.5">
-                开始创作
+                {t('gallery.emptyCta')}
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
                 </svg>
@@ -255,30 +257,30 @@ export default function GalleryPage() {
                       <span className="chip-dark">{arLabel(r.aspectRatio)}</span>
                     </div>
                     <div className="gallery-actions">
-                      <button className="ga-btn" onClick={(e) => handleFav(r.id, e)} title="收藏">
+                      <button className="ga-btn" onClick={(e) => handleFav(r.id, e)} title={r.isFavorite ? t('gallery.unfavorite') : t('gallery.favorite')}>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill={r.isFavorite ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                           <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
                         </svg>
                       </button>
-                      <button className="ga-btn" onClick={(e) => handleDownload(r, e)} title="下载">
+                      <button className="ga-btn" onClick={(e) => handleDownload(r, e)} title={t('gallery.download')}>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" />
                         </svg>
                       </button>
                       {tab !== "trash" ? (
-                        <button className="ga-btn" onClick={(e) => handleSoftDelete(r.id, e)} title="删除">
+                        <button className="ga-btn" onClick={(e) => handleSoftDelete(r.id, e)} title={t('gallery.delete')}>
                           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <polyline points="3 6 5 6 21 6" /><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6" /><path d="M10 11v6" /><path d="M14 11v6" />
                           </svg>
                         </button>
                       ) : (
                         <>
-                          <button className="ga-btn" onClick={(e) => handleRestore(r.id, e)} title="恢复">
+                          <button className="ga-btn" onClick={(e) => handleRestore(r.id, e)} title={t('gallery.restore')}>
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                               <polyline points="1 4 1 10 7 10" /><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
                             </svg>
                           </button>
-                          <button className="ga-btn ga-danger" onClick={(e) => handlePermanent(r.id, e)} title="彻底删除">
+                          <button className="ga-btn ga-danger" onClick={(e) => handlePermanent(r.id, e)} title={t('gallery.delete')}>
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                               <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
                             </svg>
@@ -347,37 +349,37 @@ export default function GalleryPage() {
               <div className="viewer-actions">
                 {!viewer.deletedAt && (
                   <>
-                    <button className="btn-primary flex-1 inline-flex items-center justify-center gap-1.5" onClick={(e) => handleDownload(viewer, e)}>
+                    <button className="btn-primary flex-1 inline-flex items-center justify-center gap-1.5" onClick={(e) => handleDownload(viewer, e)} aria-label={t('gallery.download')}>
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" />
                       </svg>
-                      下载原图
+                      {t('gallery.download')}
                     </button>
-                    <button className="btn-outline" onClick={(e) => handleFav(viewer.id, e)}>
-                      {viewer.isFavorite ? "取消收藏" : "收藏"}
+                    <button className="btn-outline" onClick={(e) => handleFav(viewer.id, e)} aria-label={viewer.isFavorite ? t('gallery.unfavorite') : t('gallery.favorite')}>
+                      {viewer.isFavorite ? t('gallery.unfavorite') : t('gallery.favorite')}
                     </button>
                     <button className="btn-outline" onClick={(e) => handlePublic(viewer.id, e)}>
                       {viewer.isPublic ? "设为私有" : "设为公开"}
                     </button>
-                    <button className="btn-outline" onClick={(e) => handleSoftDelete(viewer.id, e)}>
-                      移至回收站
+                    <button className="btn-outline" onClick={(e) => handleSoftDelete(viewer.id, e)} aria-label={t('gallery.delete')}>
+                      {t('gallery.delete')}
                     </button>
                   </>
                 )}
                 {viewer.deletedAt && (
                   <>
-                    <button className="btn-primary flex-1" onClick={(e) => { handleRestore(viewer.id, e); setViewerId(null) }}>
-                      恢复作品
+                    <button className="btn-primary flex-1" onClick={(e) => { handleRestore(viewer.id, e); setViewerId(null) }} aria-label={t('gallery.restore')}>
+                      {t('gallery.restore')}
                     </button>
-                    <button className="btn-outline" style={{ color: "#b91c1c", borderColor: "#fecaca" }} onClick={(e) => handlePermanent(viewer.id, e)}>
-                      彻底删除
+                    <button className="btn-outline" style={{ color: "#b91c1c", borderColor: "#fecaca" }} onClick={(e) => handlePermanent(viewer.id, e)} aria-label={t('gallery.delete')}>
+                      {t('gallery.delete')}
                     </button>
                   </>
                 )}
               </div>
               <a href={viewer.imageUrl} target="_blank" rel="noopener noreferrer"
-                 className="text-xs tx-soft hover:tx-foreground inline-flex items-center gap-1 mt-4 no-underline">
-                在新标签页打开原图
+                 className="text-xs tx-soft hover:tx-foreground inline-flex items-center gap-1 mt-4 no-underline" aria-label={t('gallery.view')}>
+                {t('gallery.view')}
                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /><polyline points="15 3 21 3 21 9" /><line x1="10" y1="14" x2="21" y2="3" />
                 </svg>

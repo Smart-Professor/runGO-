@@ -4,8 +4,10 @@ import Link from "next/link"
 import Nav from "@/components/Nav"
 import { useUserPoints } from "@/lib/points/UserPointsContext"
 import { POINTS_PACKAGES } from "@/lib/points/system"
+import { useI18n } from "@/lib/i18n/I18nContext"
 
 export default function DashboardPage() {
+  const { t } = useI18n()
   const { points, stats, transactionRecords, activeGenerations, favoriteGenerations, preferences, updatePreferences } = useUserPoints()
 
   const qualityPct = (k: "standard" | "hd" | "ultra") => {
@@ -26,7 +28,7 @@ export default function DashboardPage() {
 
   const statCards = [
     {
-      label: "当前积分余额",
+      label: t("dashboard.cards.pointsTitle"),
       value: points.toLocaleString(),
       suffix: "积分",
       sub: `可生成标准画质约 ${canStandard} 张`,
@@ -36,10 +38,10 @@ export default function DashboardPage() {
         </svg>
       ),
       tint: { bg: "linear-gradient(135deg,#fff8e1,#ffecb3)", fg: "#d4af37" },
-      cta: { text: "立即充值", href: "/recharge" },
+      cta: { text: t("dashboard.cards.pointsCta"), href: "/recharge" },
     },
     {
-      label: "累计生成作品",
+      label: t("dashboard.cards.generatedTitle"),
       value: stats.totalImages.toString(),
       suffix: "张",
       sub: `近 7 天新增 ${stats.recent7DaysCount} 张`,
@@ -49,10 +51,10 @@ export default function DashboardPage() {
         </svg>
       ),
       tint: { bg: "linear-gradient(135deg,#eff6ff,#dbeafe)", fg: "#2563eb" },
-      cta: { text: "查看作品库", href: "/gallery" },
+      cta: { text: t("dashboard.cards.generatedCta"), href: "/gallery" },
     },
     {
-      label: "累计消耗积分",
+      label: t("dashboard.cards.creditsTitle"),
       value: stats.totalSpent.toLocaleString(),
       suffix: "积分",
       sub: `平均 ${avgCostPerImage} 积分 / 张`,
@@ -62,10 +64,10 @@ export default function DashboardPage() {
         </svg>
       ),
       tint: { bg: "linear-gradient(135deg,#f5f3ff,#ede9fe)", fg: "#7c3aed" },
-      cta: { text: "开始创作", href: "/generate" },
+      cta: { text: t("dashboard.cards.creditsCta"), href: "/generate" },
     },
     {
-      label: "收藏的作品",
+      label: t("dashboard.cards.favoritesTitle"),
       value: stats.favoriteCount.toString(),
       suffix: "张",
       sub: `加入收藏夹，永不丢失`,
@@ -75,7 +77,7 @@ export default function DashboardPage() {
         </svg>
       ),
       tint: { bg: "linear-gradient(135deg,#fef2f2,#fee2e2)", fg: "#dc2626" },
-      cta: { text: "收藏夹", href: "/gallery" },
+      cta: { text: t("dashboard.cards.favoritesCta"), href: "/gallery" },
     },
   ]
 
@@ -92,17 +94,17 @@ export default function DashboardPage() {
                   <span className="inline-block w-1 h-1 rounded-full accent-logo" />
                   USER DASHBOARD
                 </div>
-                <h1 className="section-title mb-2">用户中心</h1>
+                <h1 className="section-title mb-2">{t("dashboard.welcome")}</h1>
                 <p className="section-subtitle">
-                  查看你的创作数据与积分状况，管理偏好设置。
+                  {t("dashboard.desc")}
                 </p>
               </div>
               <div className="flex gap-2">
                 <Link href="/recharge" className="btn-outline px-4 py-2 text-sm font-medium no-underline">
-                  积分充值
+                  {t("dashboard.secondaryCta")}
                 </Link>
                 <Link href="/generate" className="btn-primary px-4 py-2 text-sm font-medium no-underline">
-                  创作新图
+                  {t("dashboard.primaryCta")}
                 </Link>
               </div>
             </div>
@@ -129,7 +131,7 @@ export default function DashboardPage() {
                 <div className="grid grid-cols-3 gap-5 min-w-[360px]">
                   <div className="text-center">
                     <div className="text-3xl font-bold text-white">{stats.totalImages}</div>
-                    <div className="text-xs text-white/75 mt-0.5">作品总数</div>
+                    <div className="text-xs text-white/75 mt-0.5">{t("dashboard.totalGeneration")}</div>
                   </div>
                   <div className="text-center">
                     <div className="text-3xl font-bold text-white">{stats.rechargedPackageIds.length}</div>
@@ -137,7 +139,7 @@ export default function DashboardPage() {
                   </div>
                   <div className="text-center">
                     <div className="text-3xl font-bold text-white">¥{stats.totalRechargedCNY.toFixed(2)}</div>
-                    <div className="text-xs text-white/75 mt-0.5">累计充值</div>
+                    <div className="text-xs text-white/75 mt-0.5">{t("dashboard.totalSpent")}</div>
                   </div>
                 </div>
               </div>
@@ -170,7 +172,7 @@ export default function DashboardPage() {
               {/* Quality breakdown */}
               <div className="gen-panel">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold tx-foreground">画质使用分布</h3>
+                  <h3 className="text-lg font-semibold tx-foreground">{t("dashboard.qualityLabel")}</h3>
                   <span className="badge-soft">{stats.totalImages} 件作品</span>
                 </div>
                 <div className="mb-5">
@@ -189,7 +191,7 @@ export default function DashboardPage() {
                 {Object.keys(stats.imagesByStyle).length > 0 && (
                   <>
                     <div className="my-5 dash-divider" />
-                    <h4 className="text-sm font-semibold tx-foreground mb-3">风格使用 TOP</h4>
+                    <h4 className="text-sm font-semibold tx-foreground mb-3">{t("dashboard.styleLabel")}</h4>
                     <div className="space-y-2.5">
                       {Object.entries(stats.imagesByStyle)
                         .sort((a, b) => b[1] - a[1])
@@ -220,12 +222,12 @@ export default function DashboardPage() {
               {/* Recent images */}
               <div className="gen-panel">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold tx-foreground">最近作品</h3>
+                  <h3 className="text-lg font-semibold tx-foreground">{t("dashboard.recentWorks")}</h3>
                   <Link href="/gallery" className="text-sm tx-muted hover:tx-foreground no-underline">查看全部 →</Link>
                 </div>
                 {activeGenerations.length === 0 ? (
                   <div className="gen-placeholder py-8">
-                    <p className="text-sm">暂无作品，快去创作吧</p>
+                    <p className="text-sm">{t("dashboard.emptyRecent")}</p>
                   </div>
                 ) : (
                   <div className="dash-recent-grid">
@@ -248,8 +250,8 @@ export default function DashboardPage() {
               {/* Preferences */}
               <div className="gen-panel">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold tx-foreground">偏好设置</h3>
-                  <span className="text-xs tx-soft">自动保存</span>
+                  <h3 className="text-lg font-semibold tx-foreground">{t("dashboard.settings")}</h3>
+                  <span className="text-xs tx-soft">{t("dashboard.settingsDesc")}</span>
                 </div>
                 <div className="space-y-5">
                   <div>
@@ -265,7 +267,7 @@ export default function DashboardPage() {
                     </div>
                   </div>
                   <div>
-                    <label className="form-label">默认画幅比例</label>
+                    <label className="form-label">{t("dashboard.aspectLabel")}</label>
                     <div className="flex gap-2 flex-wrap">
                       {[{ v: "1:1", l: "正方形" }, { v: "3:4", l: "竖版 3:4" }, { v: "4:3", l: "横版 4:3" }, { v: "9:16", l: "手机 9:16" }, { v: "16:9", l: "电影 16:9" }].map((x) => (
                         <button key={x.v}
@@ -306,7 +308,7 @@ export default function DashboardPage() {
               {/* Transactions */}
               <div className="gen-panel">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold tx-foreground">最近交易</h3>
+                  <h3 className="text-lg font-semibold tx-foreground">{t("dashboard.recentTxs")}</h3>
                   <Link href="/recharge" className="text-sm tx-muted hover:tx-foreground no-underline">充值 →</Link>
                 </div>
                 {transactionRecords.length === 0 ? (
@@ -347,31 +349,31 @@ export default function DashboardPage() {
 
               {/* Quick links */}
               <div className="gen-panel">
-                <h3 className="text-lg font-semibold tx-foreground mb-4">快捷入口</h3>
+                <h3 className="text-lg font-semibold tx-foreground mb-4">{t("dashboard.quickLinks")}</h3>
                 <div className="grid grid-cols-2 gap-2.5">
                   <Link href="/generate" className="dash-qlink no-underline">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M12 2l2.09 6.26L20 9l-5 4.1L16.18 20 12 17.27 7.82 20 9 13.1 4 9l5.91-.74L12 2z" />
                     </svg>
-                    立即生成
+                    {t("userMenu.createNew")}
                   </Link>
                   <Link href="/gallery" className="dash-qlink no-underline">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><path d="M21 15l-5-5L5 21" />
                     </svg>
-                    作品库
+                    {t("userMenu.gallery")}
                   </Link>
                   <Link href="/recharge" className="dash-qlink no-underline">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
                     </svg>
-                    充值积分
+                    {t("userMenu.recharge")}
                   </Link>
                   <Link href="/#faq" className="dash-qlink no-underline">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <circle cx="12" cy="12" r="10" /><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /><line x1="12" y1="17" x2="12.01" y2="17" />
                     </svg>
-                    帮助中心
+                    {t("common.more")}
                   </Link>
                 </div>
               </div>

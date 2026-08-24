@@ -4,28 +4,47 @@ import "./globals.css";
 import { UserPointsProvider } from "@/lib/points/UserPointsContext";
 import { ToastProvider } from "@/components/Toast";
 import { ThemeProvider } from "@/lib/theme/ThemeContext";
+import { I18nProvider } from "@/lib/i18n/I18nContext";
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 import Script from "next/script";
 
 /**
- * 防主题闪烁同步脚本（beforeInteractive 策略）
- * 在 React 水合之前就根据 localStorage/系统偏好给 <html> 加 dark class，
- * 彻底避免"刷新先亮一下再变暗"的 FOUC 问题。
+ * 防闪烁同步脚本（beforeInteractive 策略，合并 Theme + i18n）
+ * 在 React 水合之前完成两件事：
+ *   1. Theme：根据 aurora-theme + 系统 prefers-color-scheme 设置 <html>.dark
+ *   2. i18n ：根据 aurora-locale + navigator.language 设置 <html lang=...>
+ * 这样首帧渲染就已经是正确的主题+语言，避免刷新瞬间闪错状态。
  */
 const NO_FLASH_SCRIPT = `
 (function(){
   try {
-    var KEY = 'aurora-theme';
-    var saved = localStorage.getItem(KEY);
-    var theme = (saved === 'dark' || saved === 'light') ? saved : null;
+    var root = document.documentElement;
+
+    /* -------- Theme -------- */
+    var TKEY = 'aurora-theme';
+    var theme = localStorage.getItem(TKEY);
+    if (theme !== 'dark' && theme !== 'light') theme = null;
     if (!theme) {
       theme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
     }
-    var root = document.documentElement;
     root.style.colorScheme = theme;
     if (theme === 'dark') root.classList.add('dark');
     else root.classList.remove('dark');
+
+    /* -------- Locale -------- */
+    var LKEY = 'aurora-locale';
+    var SUPPORTED = ['zh','en'];
+    var locale = localStorage.getItem(LKEY);
+    if (SUPPORTED.indexOf(locale) === -1) {
+      var nav = (window.navigator && (window.navigator.language || (window.navigator.userLanguage || '')));
+      if (nav) {
+        nav = nav.toLowerCase();
+        locale = nav.indexOf('zh') === 0 ? 'zh' : (nav.indexOf('en') === 0 ? 'en' : null);
+      }
+    }
+    if (!locale) locale = 'zh';
+    root.setAttribute('lang', locale);
   } catch (e) {}
 })();
 `;
@@ -47,9 +66,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   }, []);
 
   return (
-    // suppressHydrationWarning: 防闪烁脚本会在水合前改 html.class/style.color-scheme，
+    // suppressHydrationWarning: 防闪烁脚本会在水合前改 html.class/style/lang，
     // 这里显式允许水合不匹配（只会出现在 html 根属性，不影响业务 DOM）
-    <html lang="en" className="h-full antialiased" suppressHydrationWarning>
+    <html className="h-full antialiased" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
@@ -68,17 +87,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       {/* body suppress: 浏览器扩展(代理/安全类)常在 body 注入自定义属性，SSR/客户端差异会报警告 */}
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
         <Script
-          id="aurora-no-flash-theme"
+          id="aurora-no-flash"
           strategy="beforeInteractive"
           dangerouslySetInnerHTML={{ __html: NO_FLASH_SCRIPT }}
         />
-        <ThemeProvider>
-          <ToastProvider>
-            <UserPointsProvider authenticatedUserId={authUserId}>
-              {children}
-            </UserPointsProvider>
-          </ToastProvider>
-        </ThemeProvider>
+        <I18nProvider>
+          <ThemeProvider>
+            <ToastProvider>
+              <UserPointsProvider authenticatedUserId={authUserId}>
+                {children}
+              </UserPointsProvider>
+            </ToastProvider>
+          </ThemeProvider>
+        </I18nProvider>
       </body>
     </html>
   );

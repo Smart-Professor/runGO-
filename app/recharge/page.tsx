@@ -6,8 +6,10 @@ import Nav from "@/components/Nav"
 import { useUserPoints } from "@/lib/points/UserPointsContext"
 import { useToast } from "@/components/Toast"
 import { POINTS_PACKAGES, PointsPackage } from "@/lib/points/system"
+import { useI18n } from "@/lib/i18n/I18nContext"
 
 export default function RechargePage() {
+  const { t } = useI18n()
   const { points, loading: pointsLoading, recharge, transactionRecords, refreshPoints } = useUserPoints()
   const { showToast } = useToast()
   const [processingId, setProcessingId] = useState<string | null>(null)
@@ -51,16 +53,16 @@ export default function RechargePage() {
               <span className="inline-block w-1 h-1 rounded-full accent-logo" />
               POINTS RECHARGE
             </div>
-            <h1 className="section-title mb-4" style={{ margin: "0 auto 1rem" }}>积分充值中心</h1>
+            <h1 className="section-title mb-4" style={{ margin: "0 auto 1rem" }}>{t("recharge.title")}</h1>
             <p className="section-subtitle mx-auto mb-6">
-              充值积分，解锁更多 AI 创作能力。选择适合你的套餐，支持多种支付方式，即时到账。
+              {t("recharge.subtitle")}
             </p>
             {/* 当前积分显示 */}
             <div className="inline-flex items-center gap-3 px-6 py-3 rounded-2xl card">
               <div className="flex items-center gap-2">
                 <span className="points-icon points-icon-gold" style={{ width: 28, height: 28, fontSize: "0.8rem" }}>★</span>
                 <div className="text-left">
-                  <div className="text-xs tx-muted" style={{ fontSize: "0.72rem", letterSpacing: "0.05em", textTransform: "uppercase", fontWeight: 600 }}>当前积分余额</div>
+                  <div className="text-xs tx-muted" style={{ fontSize: "0.72rem", letterSpacing: "0.05em", textTransform: "uppercase", fontWeight: 600 }}>{t("recharge.currentBalance")}</div>
                   <div className="text-2xl font-bold tx-foreground">
                     {!pointsLoading ? points.toLocaleString() : "..."}
                   </div>
@@ -68,9 +70,9 @@ export default function RechargePage() {
               </div>
               <div className="h-8 w-px" style={{ background: "var(--line)" }} />
               <div className="text-left">
-                <div className="text-xs tx-muted" style={{ fontSize: "0.72rem", letterSpacing: "0.05em", textTransform: "uppercase", fontWeight: 600 }}>可生成图片</div>
+                <div className="text-xs tx-muted" style={{ fontSize: "0.72rem", letterSpacing: "0.05em", textTransform: "uppercase", fontWeight: 600 }}>{t("recharge.canGenerateLabel")}</div>
                 <div className="text-lg font-semibold tx-foreground">
-                  {!pointsLoading ? Math.floor(points / 10) : "..."} <span className="text-sm tx-muted font-normal">张标准</span>
+                  {!pointsLoading ? Math.floor(points / 10) : "..."} <span className="text-sm tx-muted font-normal">{t("recharge.standardPiece")}</span>
                 </div>
               </div>
             </div>
@@ -79,8 +81,8 @@ export default function RechargePage() {
           {/* 套餐卡片 */}
           <div className="mb-14 fade-up delay-1">
             <h2 className="text-lg font-semibold tx-foreground mb-5 flex items-center gap-2">
-              <span>选择充值套餐</span>
-              <span className="badge-soft">限时赠送</span>
+              <span>{t("recharge.choosePackage")}</span>
+              <span className="badge-soft">{t("recharge.limitedOffer")}</span>
             </h2>
             <div className="recharge-packages">
               {POINTS_PACKAGES.map((pkg) => {
@@ -98,13 +100,18 @@ export default function RechargePage() {
                     </div>
                     {pkg.bonus && (
                       <div className="recharge-bonus">
-                        赠送 +{pkg.bonus.toLocaleString()} 积分
+                        {t("recharge.bonusTag", { bonus: pkg.bonus.toLocaleString() })}
                       </div>
                     )}
                     {!pkg.bonus && <div style={{ height: 30 }} />}
                     <div className="recharge-price">¥{pkg.price}</div>
-                    <div className="recharge-name">{pkg.name}</div>
-                    <div className="recharge-per mb-5">约 ¥{perPoint}/积分</div>
+                    <div className="recharge-name">
+                      {pkg.id === "entry" ? t("recharge.entry") :
+                       pkg.id === "basic" ? t("recharge.basic") :
+                       pkg.id === "pro" ? t("recharge.pro") :
+                       pkg.id === "enterprise" ? t("recharge.enterprise") : pkg.name}
+                    </div>
+                    <div className="recharge-per mb-5">{t("recharge.perPointHint", { price: perPoint })}</div>
                     <button
                       disabled={processing}
                       className="w-full py-2.5 rounded-xl font-semibold text-sm transition flex items-center justify-center gap-2 disabled:opacity-60"
@@ -117,10 +124,10 @@ export default function RechargePage() {
                       {processing ? (
                         <>
                           <div className="spinner" style={pkg.popular ? { borderColor: "rgba(255,255,255,0.3)", borderTopColor: "#fff", width: 16, height: 16, borderWidth: 2 } : { width: 16, height: 16, borderWidth: 2 }} />
-                          处理中...
+                          {t("recharge.processing")}
                         </>
                       ) : (
-                        <>立即购买</>
+                        <>{t("recharge.buyNow")}</>
                       )}
                     </button>
                   </div>
@@ -132,7 +139,7 @@ export default function RechargePage() {
           {/* 交易记录 */}
           <div className="mb-10 fade-up delay-2">
             <div className="flex items-center justify-between mb-5">
-              <h2 className="text-lg font-semibold tx-foreground">积分交易记录</h2>
+              <h2 className="text-lg font-semibold tx-foreground">{t("recharge.records")}</h2>
               <span className="badge-soft">{transactionRecords.length} 条</span>
             </div>
             <div className="card overflow-hidden">
@@ -152,11 +159,11 @@ export default function RechargePage() {
                   <table className="record-table w-full">
                     <thead>
                       <tr>
-                        <th>类型</th>
-                        <th>描述</th>
-                        <th>积分变动</th>
-                        <th>金额</th>
-                        <th>时间</th>
+                        <th>{t("recharge.type")}</th>
+                        <th>{t("recharge.description")}</th>
+                        <th>{t("recharge.pointsChange")}</th>
+                        <th>{t("recharge.amount")}</th>
+                        <th>{t("recharge.time")}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -171,9 +178,9 @@ export default function RechargePage() {
                                 border: "none",
                               }}
                             >
-                              {tx.type === "recharge" && "💳 充值"}
-                              {tx.type === "generate" && "🎨 生成"}
-                              {tx.type === "bonus" && "🎁 奖励"}
+                              {tx.type === "recharge" && `💳 ${t("recharge.typeRecharge")}`}
+                              {tx.type === "generate" && `🎨 ${t("recharge.typeConsume")}`}
+                              {tx.type === "bonus" && `🎁 ${t("recharge.typeBonus")}`}
                             </span>
                           </td>
                           <td>{tx.description}</td>
@@ -201,20 +208,20 @@ export default function RechargePage() {
 
           {/* FAQ */}
           <div className="fade-up delay-3">
-            <h2 className="text-lg font-semibold tx-foreground mb-5">常见问题</h2>
+            <h2 className="text-lg font-semibold tx-foreground mb-5">{t("recharge.faq")}</h2>
             <div className="space-y-3">
               {[
                 {
-                  q: "积分会过期吗？",
-                  a: "积分永久有效，不会过期。您可以随时使用，无需担心有效期问题。",
+                  q: t("recharge.faq1Q"),
+                  a: t("recharge.faq1A"),
                 },
                 {
-                  q: "支持哪些支付方式？",
-                  a: "目前支持微信支付、支付宝、银行卡等主流支付方式，安全便捷，即时到账。",
+                  q: t("recharge.faq2Q"),
+                  a: t("recharge.faq2A"),
                 },
                 {
-                  q: "充值后可以退款吗？",
-                  a: "根据平台政策，积分一经充值使用后不支持退款。如有特殊情况，请联系客服处理。",
+                  q: t("recharge.faq3Q"),
+                  a: t("recharge.faq3A"),
                 },
                 {
                   q: "如何获得更多积分？",
@@ -236,7 +243,7 @@ export default function RechargePage() {
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M19 12H5M12 19l-7-7 7-7" />
                 </svg>
-                返回图片生成页面
+                {t("common.back")}
               </Link>
             </div>
           </div>
@@ -251,14 +258,19 @@ export default function RechargePage() {
               <div className="inline-flex items-center justify-center w-14 h-14 rounded-full mb-4" style={{ background: "linear-gradient(135deg, #f4e4a6 0%, #ffe8a3 100%)" }}>
                 <span className="text-2xl">★</span>
               </div>
-              <h3 className="text-xl font-bold tx-foreground mb-1">确认充值</h3>
-              <p className="text-sm tx-muted">即将购买以下套餐</p>
+              <h3 className="text-xl font-bold tx-foreground mb-1">{t("recharge.confirmPaymentTitle")}</h3>
+              <p className="text-sm tx-muted">{t("recharge.confirmPaymentDesc")}</p>
             </div>
 
             <div className="rounded-2xl p-5 mb-6" style={{ background: "var(--bg-soft)" }}>
               <div className="flex items-center justify-between mb-2">
-                <span className="tx-muted text-sm">套餐</span>
-                <span className="font-semibold tx-foreground">{showConfirm.name}</span>
+                <span className="tx-muted text-sm">{t("recharge.package")}</span>
+                <span className="font-semibold tx-foreground">
+                  {showConfirm.id === "entry" ? t("recharge.entry") :
+                   showConfirm.id === "basic" ? t("recharge.basic") :
+                   showConfirm.id === "pro" ? t("recharge.pro") :
+                   showConfirm.id === "enterprise" ? t("recharge.enterprise") : showConfirm.name}
+                </span>
               </div>
               <div className="flex items-center justify-between mb-2">
                 <span className="tx-muted text-sm">获得积分</span>
@@ -273,7 +285,7 @@ export default function RechargePage() {
               </div>
               <div className="h-px my-3" style={{ background: "var(--line)" }} />
               <div className="flex items-center justify-between">
-                <span className="tx-muted text-sm">应付金额</span>
+                <span className="tx-muted text-sm">{t("recharge.payAmount")}</span>
                 <span className="font-bold text-2xl tx-foreground">¥{showConfirm.price}</span>
               </div>
             </div>
@@ -284,13 +296,13 @@ export default function RechargePage() {
                 className="flex-1 py-3 rounded-xl font-semibold text-sm transition"
                 style={{ border: "1px solid var(--line)", color: "var(--fg)" }}
               >
-                取消
+                {t("common.cancel")}
               </button>
               <button
                 onClick={confirmRecharge}
                 className="flex-1 py-3 rounded-xl btn-primary font-semibold text-sm"
               >
-                确认支付
+                {t("recharge.payNow")}
               </button>
             </div>
           </div>

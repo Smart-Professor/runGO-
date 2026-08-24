@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import FAQ from "./FAQ";
 import Nav from "../components/Nav";
 import { useUserPoints } from "@/lib/points/UserPointsContext";
+import { useI18n } from "@/lib/i18n/I18nContext";
 
 /* =========================================================
    Data
@@ -284,6 +285,7 @@ function DashboardMock() {
 export default function Home() {
   const router = useRouter()
   const { points, loading: pointsLoading } = useUserPoints()
+  const { t } = useI18n()
 
   const handleCardClick = (prompt: string) => {
     // 跳转到生成页面，并携带预设prompt
@@ -300,25 +302,25 @@ export default function Home() {
       <section className="flex min-h-screen items-center pt-28 pb-16">
         <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-6 lg:grid-cols-2 lg:gap-16 lg:px-10">
           <div className="fade-up delay-1">
-            <span className="badge-soft inline-block">Aurora 2.0 — now with AI insights</span>
+            <span className="badge-soft inline-block">{t("home.heroEyebrow")}</span>
             <h1 className="mt-5 text-5xl font-semibold leading-[1.05] tracking-tight sm:text-6xl lg:text-[4rem] tx-foreground">
-              Data,
-              <br />decided.
+              {t("home.heroTitle")}
+              <br />{t("home.heroTitleAccent")}
             </h1>
             <p className="mt-6 max-w-md text-lg leading-relaxed tx-muted">
-              Aurora turns raw events into decisions. Real-time dashboards, AI-powered insights, and alerts that actually matter — all in one platform.
+              {t("home.heroSubtitle")}
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <a href="#pricing" className="btn-primary group flex items-center gap-2 px-7 py-3.5 text-sm font-medium">
-                Start free trial
+                {t("home.heroPrimary")}
                 <span className="transition group-hover:translate-x-1">→</span>
               </a>
               <a href="#features" className="btn-outline flex items-center gap-2 px-7 py-3.5 text-sm font-medium">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l6 4-6 4V4z" fill="currentColor" /></svg>
-                Watch demo
+                {t("home.heroSecondary")}
               </a>
             </div>
-            <p className="mt-5 text-xs tx-soft">No credit card required · 14-day Pro trial · Cancel anytime</p>
+            <p className="mt-5 text-xs tx-soft">{t("home.trustText")}</p>
           </div>
 
           <div className="fade-in delay-3">
@@ -331,7 +333,7 @@ export default function Home() {
       <section className="py-12 border-y ln-soft">
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
           <p className="mb-8 text-center text-xs uppercase tracking-[0.2em] tx-soft">
-            Trusted by 12,000+ teams worldwide
+            {t("home.logosEyebrow")}
           </p>
           <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
             {logos.map((logo) => (
@@ -347,23 +349,27 @@ export default function Home() {
       <section id="features" className="py-24">
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
           <div className="mx-auto max-w-2xl text-center">
-            <span className="text-xs uppercase tracking-[0.2em] tx-muted">Platform</span>
+            <span className="text-xs uppercase tracking-[0.2em] tx-muted">{t("home.featuresSection.eyebrow")}</span>
             <h2 className="mt-4 text-4xl font-semibold leading-tight tracking-tight sm:text-5xl tx-foreground">
-              Everything you need to run on data.
+              {t("home.featuresSection.title")}
             </h2>
             <p className="mt-5 text-lg tx-muted">
-              Six core capabilities. One unified platform. No bolt-ons, no integrations to maintain.
+              {t("home.featuresSection.subtitle")}
             </p>
           </div>
 
           <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {features.map((f) => (
+            {features.map((f, i) => (
               <div key={f.title} className="card card-hover p-7">
                 <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-soft tx-foreground">
                   {f.icon}
                 </div>
-                <h3 className="mt-5 text-lg font-semibold tx-foreground">{f.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed tx-muted">{f.desc}</p>
+                <h3 className="mt-5 text-lg font-semibold tx-foreground">
+                  {t(`home.featuresSection.items.${i}.title`)}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed tx-muted">
+                  {t(`home.featuresSection.items.${i}.desc`)}
+                </p>
               </div>
             ))}
           </div>
@@ -377,27 +383,25 @@ export default function Home() {
             <div className="fade-up">
               <div className="section-eyebrow">
                 <span className="inline-block w-1 h-1 rounded-full accent-logo" />
-                AI IMAGE STUDIO
+                {t("home.genCardsSection.eyebrow")}
               </div>
-              <h2 className="section-title">
-                AI 图片生成，<br />让创意即刻呈现。
-              </h2>
+              <h2 className="section-title" dangerouslySetInnerHTML={{ __html: t("home.genCardsSection.title") }} />
               <p className="section-subtitle">
-                多种风格模板一键跳转，输入描述即可生成精美图片。每张图片消耗积分，新用户注册赠送 100 积分免费体验。
+                {t("home.genCardsSection.subtitle")}
               </p>
             </div>
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 fade-up delay-2">
               <div className="points-badge" style={{ padding: "0.55rem 1rem", fontSize: "0.9rem" }}>
                 <span className="points-icon points-icon-gold" style={{ width: 20, height: 20, fontSize: "0.72rem" }}>★</span>
                 <span className="font-semibold">
-                  我的积分：{!pointsLoading ? points.toLocaleString() : "..."}
+                  {t("home.genCardsSection.myPoints", { points: pointsLoading ? "..." : points.toLocaleString() })}
                 </span>
               </div>
               <Link href="/generate" className="btn-primary px-6 py-3 text-sm font-medium inline-flex items-center gap-2 no-underline">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M12 2l2.09 6.26L20 9l-5 4.1L16.18 20 12 17.27 7.82 20 9 13.1 4 9l5.91-.74L12 2z" />
                 </svg>
-                立即开始创作
+                {t("home.genCardsSection.cta")}
                 <span>→</span>
               </Link>
             </div>
@@ -423,18 +427,18 @@ export default function Home() {
                       textShadow: "0 1px 2px rgba(0,0,0,0.2)",
                     }}
                   >
-                    {card.tag}
+                    {t(`home.genCardsSection.cards.${i}.tag`)}
                   </span>
                   <div className="gen-card-overlay">
                     <div className="text-sm font-medium inline-flex items-center gap-1">
-                      使用此模板创作
+                      {t(`home.genCardsSection.cards.${i}.cta`)}
                       <span>→</span>
                     </div>
                   </div>
                 </div>
                 <div className="gen-card-body">
-                  <h3 className="gen-card-title">{card.title}</h3>
-                  <p className="gen-card-desc">{card.desc}</p>
+                  <h3 className="gen-card-title">{t(`home.genCardsSection.cards.${i}.title`)}</h3>
+                  <p className="gen-card-desc">{t(`home.genCardsSection.cards.${i}.desc`)}</p>
                 </div>
               </div>
             ))}
@@ -456,23 +460,22 @@ export default function Home() {
             <div className="lg:col-span-3">
               <div className="inline-flex items-center gap-2 mb-3">
                 <span className="accent-logo inline-block h-2 w-2 rounded-full" />
-                <span className="text-xs uppercase tracking-widest tx-muted">Meet Aurora</span>
+                <span className="text-xs uppercase tracking-widest tx-muted">{t("home.mascot.eyebrow")}</span>
               </div>
               <h3 className="text-2xl lg:text-3xl font-semibold tx-foreground mb-3 leading-tight">
-                认识 Aurora — 你的 AI 创作助手
+                {t("home.mascot.title")}
               </h3>
               <p className="tx-muted leading-relaxed mb-6 max-w-xl">
-                Aurora 是你专属的 AI 创作伙伴，从产品摄影到动漫角色，从概念场景到时尚大片，
-                把你的文字描述变成高质量视觉作品。点击下方按钮，立即开启你的创作之旅。
+                {t("home.mascot.desc")}
               </p>
               <div className="flex flex-wrap gap-3">
                 <Link href="/generate" className="btn-primary px-6 py-3 text-sm font-medium inline-flex items-center gap-2 no-underline">
-                  进入创作工作台
+                  {t("home.mascot.primaryCta")}
                   <span>→</span>
                 </Link>
                 <Link href="/recharge" className="btn-outline px-6 py-3 text-sm font-medium inline-flex items-center gap-2 no-underline">
                   <span className="points-icon points-icon-gold">★</span>
-                  充值积分
+                  {t("home.mascot.secondaryCta")}
                 </Link>
               </div>
             </div>
@@ -486,18 +489,18 @@ export default function Home() {
           {productSections.map((s, idx) => (
             <div key={s.badge} className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
               <div className={idx % 2 === 1 ? "lg:order-2" : ""}>
-                <span className="badge-soft inline-block">{s.badge}</span>
+                <span className="badge-soft inline-block">{t(`home.productSections.${idx}.badge`)}</span>
                 <h2 className="mt-5 text-3xl font-semibold leading-tight tracking-tight sm:text-4xl tx-foreground">
-                  {s.title}
+                  {t(`home.productSections.${idx}.title`)}
                 </h2>
-                <p className="mt-5 max-w-md text-lg leading-relaxed tx-muted">{s.desc}</p>
+                <p className="mt-5 max-w-md text-lg leading-relaxed tx-muted">{t(`home.productSections.${idx}.desc`)}</p>
                 <ul className="mt-7 space-y-3">
-                  {s.bullets.map((b) => (
+                  {s.bullets.map((b, bi) => (
                     <li key={b} className="flex items-center gap-3 text-sm tx-foreground">
                       <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
                         <path d="M4 9l3.5 3.5L14 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
-                      {b}
+                      {t(`home.productSections.${idx}.bullets.${bi}`)}
                     </li>
                   ))}
                 </ul>
@@ -534,12 +537,12 @@ export default function Home() {
       <section className="py-20">
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
           <div className="grid grid-cols-2 gap-8 lg:grid-cols-4">
-            {stats.map((s) => (
+            {stats.map((s, i) => (
               <div key={s.label} className="text-center">
                 <div className="text-4xl font-semibold tracking-tight sm:text-5xl tx-foreground">
                   {s.value}
                 </div>
-                <div className="mt-2 text-sm tx-muted">{s.label}</div>
+                <div className="mt-2 text-sm tx-muted">{t(`home.stats.${i}`)}</div>
               </div>
             ))}
           </div>
@@ -550,43 +553,43 @@ export default function Home() {
       <section id="pricing" className="py-24">
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
           <div className="mx-auto max-w-2xl text-center">
-            <span className="text-xs uppercase tracking-[0.2em] tx-muted">Pricing</span>
+            <span className="text-xs uppercase tracking-[0.2em] tx-muted">{t("home.pricingSection.eyebrow")}</span>
             <h2 className="mt-4 text-4xl font-semibold leading-tight tracking-tight sm:text-5xl tx-foreground">
-              Simple, transparent pricing.
+              {t("home.pricingSection.title")}
             </h2>
             <p className="mt-5 text-lg tx-muted">
-              Start free. Upgrade when you need more. No hidden fees.
+              {t("home.pricingSection.subtitle")}
             </p>
           </div>
 
           <div className="mt-14 grid grid-cols-1 gap-6 lg:grid-cols-3">
-            {pricing.map((p) => (
+            {pricing.map((p, pi) => (
               <div
                 key={p.name}
                 className={`card pricing-card ${p.featured ? "pricing-featured" : ""}`}
               >
                 {p.featured && (
-                  <span className="badge absolute -top-3 left-1/2 -translate-x-1/2">Most popular</span>
+                  <span className="badge absolute -top-3 left-1/2 -translate-x-1/2">{t("home.pricingSection.popular")}</span>
                 )}
-                <h3 className="text-lg font-semibold tx-foreground">{p.name}</h3>
-                <p className="mt-1 text-sm tx-muted">{p.desc}</p>
+                <h3 className="text-lg font-semibold tx-foreground">{t(`home.pricingSection.plans.${pi}.name`)}</h3>
+                <p className="mt-1 text-sm tx-muted">{t(`home.pricingSection.plans.${pi}.desc`)}</p>
                 <div className="mt-6 flex items-baseline gap-1.5">
                   <span className="text-4xl font-semibold tracking-tight tx-foreground">{p.price}</span>
-                  {p.period && <span className="text-sm tx-soft">{p.period}</span>}
+                  {p.period && <span className="text-sm tx-soft">{t(`home.pricingSection.plans.${pi}.period`)}</span>}
                 </div>
                 <a
-                  href="#"
+                  href={p.featured ? "/sign-up" : "#"}
                   className={`mt-6 block text-center py-3 text-sm font-medium ${p.featured ? "btn-primary" : "btn-outline"}`}
                 >
-                  {p.cta}
+                  {pi === 0 ? t("home.pricingSection.ctaFree") : t("home.pricingSection.cta")}
                 </a>
                 <ul className="mt-7 space-y-3">
-                  {p.features.map((f) => (
+                  {p.features.map((f, fi) => (
                     <li key={f} className="flex items-start gap-3 text-sm tx-muted">
                       <svg width="18" height="18" viewBox="0 0 18 18" fill="none" className="mt-0.5 shrink-0">
                         <path d="M4 9l3.5 3.5L14 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
-                      {f}
+                      {t(`home.pricingSection.plans.${pi}.features.${fi}`)}
                     </li>
                   ))}
                 </ul>
@@ -600,23 +603,23 @@ export default function Home() {
       <section className="py-24 bg-soft">
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
           <div className="max-w-2xl">
-            <span className="text-xs uppercase tracking-[0.2em] tx-muted">Customers</span>
+            <span className="text-xs uppercase tracking-[0.2em] tx-muted">{t("home.testimonials.eyebrow")}</span>
             <h2 className="mt-4 text-4xl font-semibold leading-tight tracking-tight sm:text-5xl tx-foreground">
-              Loved by data teams.
+              {t("home.testimonials.title")}
             </h2>
           </div>
           <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-3">
-            {testimonials.map((t) => (
-              <div key={t.name} className="card p-7">
+            {testimonials.map((tm, i) => (
+              <div key={tm.name} className="card p-7">
                 <svg width="28" height="28" viewBox="0 0 28 28" fill="none" className="tx-soft mb-4">
                   <path d="M11 7H6a3 3 0 0 0-3 3v4a3 3 0 0 0 3 3h2v3a3 3 0 0 1-3 3M25 7h-5a3 3 0 0 0-3 3v4a3 3 0 0 0 3 3h2v3a3 3 0 0 1-3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
-                <p className="text-base leading-relaxed tx-foreground">{t.quote}</p>
+                <p className="text-base leading-relaxed tx-foreground">{t(`home.testimonials.items.${i}.quote`)}</p>
                 <div className="mt-6 flex items-center gap-3">
-                  <span className="avatar">{t.initials}</span>
+                  <span className="avatar">{tm.initials}</span>
                   <div>
-                    <div className="text-sm font-medium tx-foreground">{t.name}</div>
-                    <div className="text-xs tx-soft">{t.role}</div>
+                    <div className="text-sm font-medium tx-foreground">{t(`home.testimonials.items.${i}.name`)}</div>
+                    <div className="text-xs tx-soft">{t(`home.testimonials.items.${i}.role`)}</div>
                   </div>
                 </div>
               </div>
@@ -629,9 +632,9 @@ export default function Home() {
       <section className="py-24">
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
           <div className="mx-auto max-w-2xl text-center">
-            <span className="text-xs uppercase tracking-[0.2em] tx-muted">FAQ</span>
+            <span className="text-xs uppercase tracking-[0.2em] tx-muted">{t("home.faq.eyebrow")}</span>
             <h2 className="mt-4 text-4xl font-semibold leading-tight tracking-tight sm:text-5xl tx-foreground">
-              Questions, answered.
+              {t("home.faq.title")}
             </h2>
           </div>
           <div className="mt-12">
@@ -644,15 +647,15 @@ export default function Home() {
       <section className="py-24">
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
           <div className="card rounded-2xl px-8 py-20 text-center sm:px-16">
-            <span className="text-xs uppercase tracking-[0.2em] tx-muted">Get started</span>
+            <span className="text-xs uppercase tracking-[0.2em] tx-muted">{t("home.ctaSection.eyebrow")}</span>
             <h2 className="mx-auto mt-6 max-w-3xl text-4xl font-semibold leading-tight tracking-tight sm:text-6xl tx-foreground">
-              Ship your first dashboard today.
+              {t("home.ctaSection.title")}
             </h2>
             <p className="mx-auto mt-6 max-w-md text-lg tx-muted">
-              Free 14-day trial. No credit card. Set up in 5 minutes.
+              {t("home.ctaSection.subtitle")}
             </p>
             <a href="#pricing" className="btn-primary mt-10 inline-flex items-center gap-2 px-8 py-4 text-sm font-medium">
-              Start free trial
+              {t("home.ctaSection.primary")}
               <span>→</span>
             </a>
           </div>
@@ -666,10 +669,10 @@ export default function Home() {
             <div className="col-span-2">
               <Link href="/" className="flex items-center gap-2">
                 <span className="accent-logo inline-block h-2 w-2 rounded-full" />
-                <span className="text-lg font-semibold tracking-tight tx-foreground">Aurora</span>
+                <span className="text-lg font-semibold tracking-tight tx-foreground">{t("nav.logo")}</span>
               </Link>
               <p className="mt-4 max-w-xs text-sm tx-soft">
-                The analytics platform for teams that run on data.
+                {t("home.footer.tagline")}
               </p>
               <div className="mt-6 flex gap-3">
                 {["X", "in", "GH", "@"].map((s) => (
@@ -679,13 +682,15 @@ export default function Home() {
                 ))}
               </div>
             </div>
-            {footerLinks.map((col) => (
+            {footerLinks.map((col, ci) => (
               <div key={col.h}>
-                <div className="text-xs uppercase tracking-wider tx-soft">{col.h}</div>
+                <div className="text-xs uppercase tracking-wider tx-soft">{t(`home.footer.cols.${ci}.h`)}</div>
                 <ul className="mt-4 space-y-2.5 text-sm tx-muted">
-                  {col.l.map((x) => (
+                  {col.l.map((x, li) => (
                     <li key={x}>
-                      <a href="#" className="link-underline transition hover:tx-foreground">{x}</a>
+                      <a href="#" className="link-underline transition hover:tx-foreground">
+                        {t(`home.footer.cols.${ci}.items.${li}`)}
+                      </a>
                     </li>
                   ))}
                 </ul>
@@ -693,10 +698,10 @@ export default function Home() {
             ))}
           </div>
           <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t ln-line pt-8 text-xs tx-soft sm:flex-row">
-            <div>© 2026 Aurora, Inc. All rights reserved.</div>
+            <div>{t("home.footer.rights")}</div>
             <div className="flex items-center gap-2">
               <span className="pulse-dot" />
-              <span>All systems operational</span>
+              <span>{t("home.footer.status")}</span>
             </div>
           </div>
         </div>

@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation"
 import Nav from "@/components/Nav"
 import { useUserPoints, aspectRatioToImageSize } from "@/lib/points/UserPointsContext"
 import { useToast } from "@/components/Toast"
+import { useI18n } from "@/lib/i18n/I18nContext"
 import type { AspectRatio, ImageStyle } from "@/lib/points/system"
 import {
   ASPECT_RATIOS,
@@ -42,6 +43,7 @@ function buildImageUrl(prompt: string, quality: Quality, ar: AspectRatio): strin
 }
 
 export default function GeneratePage() {
+  const { t } = useI18n()
   const { points, loading: pointsLoading, preferences, getCost, generateImage, generationRecords, refreshPoints } = useUserPoints()
   const { showToast } = useToast()
   const router = useRouter()
@@ -81,7 +83,7 @@ export default function GeneratePage() {
 
   const handleGenerate = async () => {
     if (!prompt.trim()) {
-      showToast("请输入图片描述", "error")
+      showToast(t('generate.noPrompt'), "error")
       return
     }
     if (!canAfford) {
@@ -161,9 +163,9 @@ export default function GeneratePage() {
               <span className="inline-block w-1 h-1 rounded-full accent-logo" />
               AI IMAGE STUDIO
             </div>
-            <h1 className="section-title mb-3">AI 图片生成工作台</h1>
+            <h1 className="section-title mb-3">{t('generate.title')}</h1>
             <p className="section-subtitle">
-              输入文字描述，选择风格、画幅、画质即可生成精美图片。新用户赠送 100 积分，体验无门槛。
+              {t('generate.subtitle')}
             </p>
           </div>
 
@@ -173,7 +175,7 @@ export default function GeneratePage() {
               {/* 创作描述 */}
               <div className="gen-panel fade-up delay-1">
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-semibold tx-foreground">创作描述</h2>
+                  <h2 className="text-lg font-semibold tx-foreground">{t('generate.promptLabel')}</h2>
                   <div className="flex items-center gap-2 text-sm tx-muted">
                     <span className="points-icon points-icon-gold">★</span>
                     <span>当前积分：</span>
@@ -185,14 +187,14 @@ export default function GeneratePage() {
 
                 <textarea
                   className="gen-textarea mb-3"
-                  placeholder="描述你想要生成的图片，越详细效果越好。例如：一只在樱花树下的柴犬，阳光透过花瓣洒落，电影级质感..."
+                  placeholder={t('generate.promptPlaceholder')}
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
                 />
 
                 {/* 快速模板 */}
                 <div className="mb-5">
-                  <p className="text-xs tx-soft mb-2" style={{ letterSpacing: "0.04em", textTransform: "uppercase", fontWeight: 600 }}>快速模板</p>
+                  <p className="text-xs tx-soft mb-2" style={{ letterSpacing: "0.04em", textTransform: "uppercase", fontWeight: 600 }}>{t('generate.templatesLabel')}</p>
                   <div className="flex flex-wrap gap-2">
                     {PRESET_PROMPTS.map((p, i) => (
                       <button key={i} className="chip" onClick={() => applyPreset(p.prompt)}>
@@ -204,7 +206,7 @@ export default function GeneratePage() {
 
                 {/* 风格选择 */}
                 <div className="mb-5">
-                  <p className="text-xs tx-soft mb-2" style={{ letterSpacing: "0.04em", textTransform: "uppercase", fontWeight: 600 }}>艺术风格</p>
+                  <p className="text-xs tx-soft mb-2" style={{ letterSpacing: "0.04em", textTransform: "uppercase", fontWeight: 600 }}>{t('generate.styleLabel')}</p>
                   <div className="flex flex-wrap gap-2">
                     {IMAGE_STYLES.map((s) => {
                       const sel = style === s.value
@@ -224,7 +226,7 @@ export default function GeneratePage() {
 
                 {/* 画幅比例 */}
                 <div className="mb-5">
-                  <p className="text-xs tx-soft mb-2" style={{ letterSpacing: "0.04em", textTransform: "uppercase", fontWeight: 600 }}>画幅比例</p>
+                  <p className="text-xs tx-soft mb-2" style={{ letterSpacing: "0.04em", textTransform: "uppercase", fontWeight: 600 }}>{t('generate.aspectLabel')}</p>
                   <div className="grid grid-cols-5 gap-2">
                     {ASPECT_RATIOS.map((opt) => {
                       const sel = aspectRatio === opt.value
@@ -246,19 +248,20 @@ export default function GeneratePage() {
 
                 {/* 画质选择 */}
                 <div className="mb-5">
-                  <p className="text-xs tx-soft mb-2" style={{ letterSpacing: "0.04em", textTransform: "uppercase", fontWeight: 600 }}>画质等级</p>
+                  <p className="text-xs tx-soft mb-2" style={{ letterSpacing: "0.04em", textTransform: "uppercase", fontWeight: 600 }}>{t('generate.qualityLabel')}</p>
                   <div className="flex gap-3">
                     {QUALITY_OPTIONS.map((opt) => {
                       const optCost = getCost(opt.value)
                       const selected = quality === opt.value
+                      const qualityLabel = opt.value === "standard" ? t('generate.standard') : opt.value === "hd" ? t('generate.hd') : t('generate.ultra')
                       return (
                         <button
                           key={opt.value}
                           className={`quality-option ${selected ? "quality-selected" : ""}`}
                           onClick={() => setQuality(opt.value)}
                         >
-                          <div className="quality-label">{opt.label}</div>
-                          <div className="quality-cost">{opt.size} · {optCost} 积分/张</div>
+                          <div className="quality-label">{qualityLabel}</div>
+                          <div className="quality-cost">{opt.size} · {optCost} {t('generate.costLabel')}</div>
                         </button>
                       )
                     })}
@@ -275,29 +278,30 @@ export default function GeneratePage() {
                     {generating ? (
                       <>
                         <div className="spinner spinner-white" style={{ width: 18, height: 18, borderWidth: 2 }} />
-                        <span>生成中...</span>
+                        <span>{t('generate.generating')}</span>
                       </>
                     ) : (
                       <>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                           <path d="M12 2l2.09 6.26L20 9l-5 4.1L16.18 20 12 17.27 7.82 20 9 13.1 4 9l5.91-.74L12 2z" />
                         </svg>
-                        <span>生成图片</span>
-                        <span className="opacity-75" style={{ fontWeight: 500 }}>({cost} 积分)</span>
+                        <span>{t('generate.generateButton')}</span>
+                        <span className="opacity-75" style={{ fontWeight: 500 }}>({cost} {t('generate.costLabel')})</span>
                       </>
                     )}
                   </button>
                   {!canAfford && (
                     <Link href="/recharge" className="btn-outline px-5 py-3 text-sm font-medium flex items-center gap-1.5 no-underline">
                       <span className="points-icon points-icon-gold">★</span>
-                      充值积分
+                      {t('generate.goRecharge')}
                     </Link>
                   )}
                 </div>
 
                 {!canAfford && (
                   <div className="mt-3 text-sm text-center p-3 rounded-lg" style={{ background: "#fef2f2", color: "#dc2626" }}>
-                    积分不足！还需要 <strong>{cost - points}</strong> 积分
+                    <div className="font-semibold mb-1">{t('generate.notEnoughPoints')}</div>
+                    <div>{t('generate.notEnoughPointsDesc')} <strong>{cost - points}</strong> {t('generate.costLabel')}</div>
                   </div>
                 )}
               </div>
@@ -305,7 +309,7 @@ export default function GeneratePage() {
               {/* 生成记录 */}
               <div className="gen-panel fade-up delay-2">
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-semibold tx-foreground">最近生成</h2>
+                  <h2 className="text-lg font-semibold tx-foreground">{t('generate.historyLabel')}</h2>
                   <div className="flex items-center gap-2">
                     <span className="badge-soft">{generationRecords.length} 张</span>
                     {generationRecords.length > 0 && (
@@ -322,8 +326,8 @@ export default function GeneratePage() {
                       <circle cx="8.5" cy="8.5" r="1.5" />
                       <path d="M21 15l-5-5L5 21" />
                     </svg>
-                    <p className="text-sm">暂无生成记录</p>
-                    <p className="text-xs mt-1">开始创作你的第一张图片吧</p>
+                    <p className="text-sm">{t('generate.historyEmpty')}</p>
+                    <p className="text-xs mt-1">{t('generate.historyEmptyDesc')}</p>
                   </div>
                 ) : (
                   <>
@@ -364,7 +368,7 @@ export default function GeneratePage() {
                             <polyline points="7 10 12 15 17 10" />
                             <line x1="12" y1="15" x2="12" y2="3" />
                           </svg>
-                          下载图片
+                          {t('generate.download')}
                         </button>
                         <a
                           href={currentImage}
@@ -406,8 +410,8 @@ export default function GeneratePage() {
                       <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" className="mx-auto mb-4 opacity-40">
                         <path d="M12 2l2.09 6.26L20 9l-5 4.1L16.18 20 12 17.27 7.82 20 9 13.1 4 9l5.91-.74L12 2z" />
                       </svg>
-                      <p className="font-medium tx-foreground mb-1">还没有生成图片</p>
-                      <p className="text-sm">在左侧输入描述，点击生成按钮开始创作</p>
+                      <p className="font-medium tx-foreground mb-1">{t('generate.previewPlaceholder')}</p>
+                      <p className="text-sm">{t('generate.previewReady')}</p>
                       <div className="mt-6 skeleton mx-auto" style={{ width: "80%", height: 8, marginBottom: 8 }} />
                       <div className="skeleton mx-auto" style={{ width: "60%", height: 8 }} />
                     </div>
@@ -433,7 +437,7 @@ export default function GeneratePage() {
                           风格：{IMAGE_STYLES.find((s) => s.value === lastStyle)?.label}
                         </span>
                       )}
-                      <span className="badge-soft">-{cost} 积分</span>
+                      <span className="badge-soft">-{cost} {t('generate.costLabel')}</span>
                     </div>
                     <div className="p-4 rounded-xl" style={{ background: "var(--bg-soft)" }}>
                       <p className="text-xs tx-soft mb-2" style={{ letterSpacing: "0.04em", textTransform: "uppercase", fontWeight: 600 }}>本次创作描述</p>
