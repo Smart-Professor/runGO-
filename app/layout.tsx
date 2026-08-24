@@ -65,7 +65,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)" />
         <meta name="theme-color" content="#0f0f11" media="(prefers-color-scheme: dark)" />
       </head>
-      <body className="min-h-full flex flex-col">
+      {/* body suppress: 浏览器扩展(代理/安全类)常在 body 注入自定义属性，SSR/客户端差异会报警告 */}
+      <body className="min-h-full flex flex-col" suppressHydrationWarning>
         <Script
           id="aurora-no-flash-theme"
           strategy="beforeInteractive"
