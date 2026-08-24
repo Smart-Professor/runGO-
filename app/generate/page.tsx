@@ -169,303 +169,307 @@ export default function GeneratePage() {
             </p>
           </div>
 
-          <div className="gen-layout">
-            {/* 左侧：输入面板 */}
-            <div className="space-y-5">
-              {/* 创作描述 */}
-              <div className="gen-panel fade-up delay-1">
-                <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-semibold tx-foreground">{t('generate.promptLabel')}</h2>
-                  <div className="flex items-center gap-2 text-sm tx-muted">
-                    <span className="points-icon points-icon-gold">★</span>
-                    <span>当前积分：</span>
-                    <span className="font-semibold tx-foreground">
-                      {!pointsLoading ? points.toLocaleString() : "..."}
-                    </span>
-                  </div>
+          {/* 核心双栏：左参数 + 右大预览（预览占更多面积，避免之前 1:1 失衡感） */}
+          <div className="gen-layout mb-8">
+            {/* 左：创作参数 */}
+            <div className="gen-panel fade-up delay-1">
+              <div className="flex items-center justify-between mb-5">
+                <h2 className="text-lg font-semibold tx-foreground flex items-center gap-2">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 20h9" />
+                    <path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z" />
+                  </svg>
+                  {t('generate.promptLabel')}
+                </h2>
+                <div className="flex items-center gap-2 text-sm tx-muted">
+                  <span className="points-icon points-icon-gold">★</span>
+                  <span>{t('generate.pointsNow')}：</span>
+                  <span className="font-semibold tx-foreground">
+                    {!pointsLoading ? points.toLocaleString() : "..."}
+                  </span>
                 </div>
+              </div>
 
-                <textarea
-                  className="gen-textarea mb-3"
-                  placeholder={t('generate.promptPlaceholder')}
-                  value={prompt}
-                  onChange={(e) => setPrompt(e.target.value)}
-                />
+              <textarea
+                className="gen-textarea mb-4"
+                placeholder={t('generate.promptPlaceholder')}
+                value={prompt}
+                onChange={(e) => setPrompt(e.target.value)}
+              />
 
-                {/* 快速模板 */}
-                <div className="mb-5">
-                  <p className="text-xs tx-soft mb-2" style={{ letterSpacing: "0.04em", textTransform: "uppercase", fontWeight: 600 }}>{t('generate.templatesLabel')}</p>
-                  <div className="flex flex-wrap gap-2">
-                    {PRESET_PROMPTS.map((p, i) => (
-                      <button key={i} className="chip" onClick={() => applyPreset(p.prompt)}>
-                        {p.label}
+              {/* 快速模板 */}
+              <div className="mb-5">
+                <p className="text-xs tx-soft mb-2" style={{ letterSpacing: "0.04em", textTransform: "uppercase", fontWeight: 600 }}>{t('generate.templatesLabel')}</p>
+                <div className="flex flex-wrap gap-2">
+                  {PRESET_PROMPTS.map((p, i) => (
+                    <button key={i} className="chip" onClick={() => applyPreset(p.prompt)}>
+                      {p.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* 风格选择 */}
+              <div className="mb-5">
+                <p className="text-xs tx-soft mb-2" style={{ letterSpacing: "0.04em", textTransform: "uppercase", fontWeight: 600 }}>{t('generate.styleLabel')}</p>
+                <div className="flex flex-wrap gap-2">
+                  {IMAGE_STYLES.map((s) => {
+                    const sel = style === s.value
+                    return (
+                      <button
+                        key={s.value}
+                        onClick={() => setStyle(s.value)}
+                        className={`chip ${sel ? "chip-active" : ""}`}
+                        title={s.suffix || "原样输出提示词"}
+                      >
+                        {s.label}
                       </button>
-                    ))}
-                  </div>
+                    )
+                  })}
                 </div>
-
-                {/* 风格选择 */}
-                <div className="mb-5">
-                  <p className="text-xs tx-soft mb-2" style={{ letterSpacing: "0.04em", textTransform: "uppercase", fontWeight: 600 }}>{t('generate.styleLabel')}</p>
-                  <div className="flex flex-wrap gap-2">
-                    {IMAGE_STYLES.map((s) => {
-                      const sel = style === s.value
-                      return (
-                        <button
-                          key={s.value}
-                          onClick={() => setStyle(s.value)}
-                          className={`chip ${sel ? "chip-active" : ""}`}
-                          title={s.suffix || "原样输出提示词"}
-                        >
-                          {s.label}
-                        </button>
-                      )
-                    })}
-                  </div>
-                </div>
-
-                {/* 画幅比例 */}
-                <div className="mb-5">
-                  <p className="text-xs tx-soft mb-2" style={{ letterSpacing: "0.04em", textTransform: "uppercase", fontWeight: 600 }}>{t('generate.aspectLabel')}</p>
-                  <div className="grid grid-cols-5 gap-2">
-                    {ASPECT_RATIOS.map((opt) => {
-                      const sel = aspectRatio === opt.value
-                      return (
-                        <button
-                          key={opt.value}
-                          onClick={() => setAspectRatio(opt.value)}
-                          className={`aspect-option ${sel ? "aspect-selected" : ""}`}
-                        >
-                          <div className="aspect-thumb" style={opt.css}>
-                            <div className="aspect-thumb-inner" />
-                          </div>
-                          <div className="aspect-label">{opt.label}</div>
-                        </button>
-                      )
-                    })}
-                  </div>
-                </div>
-
-                {/* 画质选择 */}
-                <div className="mb-5">
-                  <p className="text-xs tx-soft mb-2" style={{ letterSpacing: "0.04em", textTransform: "uppercase", fontWeight: 600 }}>{t('generate.qualityLabel')}</p>
-                  <div className="flex gap-3">
-                    {QUALITY_OPTIONS.map((opt) => {
-                      const optCost = getCost(opt.value)
-                      const selected = quality === opt.value
-                      const qualityLabel = opt.value === "standard" ? t('generate.standard') : opt.value === "hd" ? t('generate.hd') : t('generate.ultra')
-                      return (
-                        <button
-                          key={opt.value}
-                          className={`quality-option ${selected ? "quality-selected" : ""}`}
-                          onClick={() => setQuality(opt.value)}
-                        >
-                          <div className="quality-label">{qualityLabel}</div>
-                          <div className="quality-cost">{opt.size} · {optCost} {t('generate.costLabel')}</div>
-                        </button>
-                      )
-                    })}
-                  </div>
-                </div>
-
-                {/* 生成按钮 */}
-                <div className="flex gap-3">
-                  <button
-                    onClick={handleGenerate}
-                    disabled={generating || !canAfford || !prompt.trim()}
-                    className="btn-primary flex-1 py-3 px-5 font-semibold text-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                  >
-                    {generating ? (
-                      <>
-                        <div className="spinner spinner-white" style={{ width: 18, height: 18, borderWidth: 2 }} />
-                        <span>{t('generate.generating')}</span>
-                      </>
-                    ) : (
-                      <>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M12 2l2.09 6.26L20 9l-5 4.1L16.18 20 12 17.27 7.82 20 9 13.1 4 9l5.91-.74L12 2z" />
-                        </svg>
-                        <span>{t('generate.generateButton')}</span>
-                        <span className="opacity-75" style={{ fontWeight: 500 }}>({cost} {t('generate.costLabel')})</span>
-                      </>
-                    )}
-                  </button>
-                  {!canAfford && (
-                    <Link href="/recharge" className="btn-outline px-5 py-3 text-sm font-medium flex items-center gap-1.5 no-underline">
-                      <span className="points-icon points-icon-gold">★</span>
-                      {t('generate.goRecharge')}
-                    </Link>
-                  )}
-                </div>
-
-                {!canAfford && (
-                  <div className="mt-3 text-sm text-center p-3 rounded-lg" style={{ background: "#fef2f2", color: "#dc2626" }}>
-                    <div className="font-semibold mb-1">{t('generate.notEnoughPoints')}</div>
-                    <div>{t('generate.notEnoughPointsDesc')} <strong>{cost - points}</strong> {t('generate.costLabel')}</div>
-                  </div>
-                )}
               </div>
 
-              {/* 生成记录 */}
-              <div className="gen-panel fade-up delay-2">
-                <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-semibold tx-foreground">{t('generate.historyLabel')}</h2>
-                  <div className="flex items-center gap-2">
-                    <span className="badge-soft">{generationRecords.length} 张</span>
-                    {generationRecords.length > 0 && (
-                      <Link href="/gallery" className="btn-outline px-3 py-1.5 text-xs font-medium no-underline">
-                        查看全部 →
-                      </Link>
-                    )}
-                  </div>
-                </div>
-                {generationRecords.length === 0 ? (
-                  <div className="gen-placeholder py-8">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="mx-auto mb-3 opacity-40">
-                      <rect x="3" y="3" width="18" height="18" rx="2" />
-                      <circle cx="8.5" cy="8.5" r="1.5" />
-                      <path d="M21 15l-5-5L5 21" />
-                    </svg>
-                    <p className="text-sm">{t('generate.historyEmpty')}</p>
-                    <p className="text-xs mt-1">{t('generate.historyEmptyDesc')}</p>
-                  </div>
-                ) : (
-                  <>
-                    <div className="gen-history">
-                      {generationRecords.slice(0, 12).map((r) => (
-                        <div
-                          key={r.id}
-                          className="gen-history-item"
-                          onClick={() => handleUseAsPrompt(r)}
-                          title={`${r.prompt.slice(0, 50)} · 点击重新载入参数`}
-                          style={{ backgroundImage: `url(${r.imageUrl})`, aspectRatio: r.aspectRatio === "1:1" ? "1 / 1" : undefined }}
-                        >
-                          {r.isFavorite && (
-                            <span className="fav-chip" title="已收藏">★</span>
-                          )}
+              {/* 画幅比例 */}
+              <div className="mb-5">
+                <p className="text-xs tx-soft mb-2" style={{ letterSpacing: "0.04em", textTransform: "uppercase", fontWeight: 600 }}>{t('generate.aspectLabel')}</p>
+                <div className="grid grid-cols-5 gap-2">
+                  {ASPECT_RATIOS.map((opt) => {
+                    const sel = aspectRatio === opt.value
+                    return (
+                      <button
+                        key={opt.value}
+                        onClick={() => setAspectRatio(opt.value)}
+                        className={`aspect-option ${sel ? "aspect-selected" : ""}`}
+                      >
+                        <div className="aspect-thumb" style={opt.css}>
+                          <div className="aspect-thumb-inner" />
                         </div>
-                      ))}
-                    </div>
-                  </>
-                )}
-              </div>
-            </div>
-
-            {/* 右侧：预览面板 */}
-            <div className="space-y-5">
-              <div className="gen-panel fade-up delay-3 sticky" style={{ top: 90 }}>
-                <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-semibold tx-foreground">预览</h2>
-                  <div className="flex gap-2">
-                    {currentImage && !generating && (
-                      <>
-                        <button
-                          onClick={handleDownload}
-                          className="btn-primary px-4 py-1.5 text-xs font-medium inline-flex items-center gap-1.5"
-                        >
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                            <polyline points="7 10 12 15 17 10" />
-                            <line x1="12" y1="15" x2="12" y2="3" />
-                          </svg>
-                          {t('generate.download')}
-                        </button>
-                        <a
-                          href={currentImage}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="btn-outline px-4 py-1.5 text-xs font-medium no-underline inline-flex items-center gap-1.5"
-                        >
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                            <polyline points="15 3 21 3 21 9" />
-                            <line x1="10" y1="14" x2="21" y2="3" />
-                          </svg>
-                          原图
-                        </a>
-                      </>
-                    )}
-                  </div>
+                        <div className="aspect-label">{opt.label}</div>
+                      </button>
+                    )
+                  })}
                 </div>
+              </div>
 
-                <div className="gen-preview mb-4" style={selectedAR.css}>
+              {/* 画质选择 */}
+              <div className="mb-6">
+                <p className="text-xs tx-soft mb-2" style={{ letterSpacing: "0.04em", textTransform: "uppercase", fontWeight: 600 }}>{t('generate.qualityLabel')}</p>
+                <div className="flex gap-3">
+                  {QUALITY_OPTIONS.map((opt) => {
+                    const optCost = getCost(opt.value)
+                    const selected = quality === opt.value
+                    const qualityLabel = opt.value === "standard" ? t('generate.standard') : opt.value === "hd" ? t('generate.hd') : t('generate.ultra')
+                    return (
+                      <button
+                        key={opt.value}
+                        className={`quality-option ${selected ? "quality-selected" : ""}`}
+                        onClick={() => setQuality(opt.value)}
+                      >
+                        <div className="quality-label">{qualityLabel}</div>
+                        <div className="quality-cost">{opt.size} · {optCost} {t('generate.costLabel')}</div>
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+
+              {/* 生成按钮 */}
+              <div className="flex gap-3 mb-5">
+                <button
+                  onClick={handleGenerate}
+                  disabled={generating || !canAfford || !prompt.trim()}
+                  className="btn-primary flex-1 py-3.5 px-5 font-semibold text-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                >
                   {generating ? (
-                    <div className="text-center py-12">
-                      <div className="spinner spinner-lg mx-auto mb-4" />
-                      <p className="font-medium tx-foreground mb-1">AI 正在创作中...</p>
-                      <p className="text-sm tx-muted">大约需要几秒钟</p>
-                    </div>
-                  ) : currentImage ? (
-                    <img
-                      ref={imgRef}
-                      src={currentImage}
-                      alt="Generated"
-                      crossOrigin="anonymous"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><rect width='400' height='400' fill='%23f5f5f5'/><text x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%238c8c8c' font-family='Arial' font-size='14'>Click to view image</text></svg>"
-                      }}
-                    />
+                    <>
+                      <div className="spinner spinner-white" style={{ width: 18, height: 18, borderWidth: 2 }} />
+                      <span>{t('generate.generating')}</span>
+                    </>
                   ) : (
-                    <div className="gen-placeholder">
-                      <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" className="mx-auto mb-4 opacity-40">
+                    <>
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M12 2l2.09 6.26L20 9l-5 4.1L16.18 20 12 17.27 7.82 20 9 13.1 4 9l5.91-.74L12 2z" />
                       </svg>
-                      <p className="font-medium tx-foreground mb-1">{t('generate.previewPlaceholder')}</p>
-                      <p className="text-sm">{t('generate.previewReady')}</p>
-                      <div className="mt-6 skeleton mx-auto" style={{ width: "80%", height: 8, marginBottom: 8 }} />
-                      <div className="skeleton mx-auto" style={{ width: "60%", height: 8 }} />
-                    </div>
+                      <span>{t('generate.generateButton')}</span>
+                      <span className="opacity-80" style={{ fontWeight: 500 }}>({cost} {t('generate.costLabel')})</span>
+                    </>
                   )}
-                </div>
-
-                {/* 当前信息 */}
-                {lastPrompt && !generating && (
-                  <div className="space-y-3">
-                    <div className="flex flex-wrap gap-2 mb-2">
-                      {lastQuality && (
-                        <span className="badge-soft">
-                          画质：{QUALITY_OPTIONS.find((q) => q.value === lastQuality)?.label}
-                        </span>
-                      )}
-                      {lastAR && (
-                        <span className="badge-soft">
-                          画幅：{ASPECT_RATIOS.find((a) => a.value === lastAR)?.label}
-                        </span>
-                      )}
-                      {lastStyle && lastStyle !== "auto" && (
-                        <span className="badge-soft">
-                          风格：{IMAGE_STYLES.find((s) => s.value === lastStyle)?.label}
-                        </span>
-                      )}
-                      <span className="badge-soft">-{cost} {t('generate.costLabel')}</span>
-                    </div>
-                    <div className="p-4 rounded-xl" style={{ background: "var(--bg-soft)" }}>
-                      <p className="text-xs tx-soft mb-2" style={{ letterSpacing: "0.04em", textTransform: "uppercase", fontWeight: 600 }}>本次创作描述</p>
-                      <p className="text-sm tx-foreground leading-relaxed whitespace-pre-wrap">{lastPrompt}</p>
-                    </div>
-                  </div>
+                </button>
+                {!canAfford && (
+                  <Link href="/recharge" className="btn-outline px-5 py-3.5 text-sm font-medium flex items-center gap-1.5 no-underline whitespace-nowrap">
+                    <span className="points-icon points-icon-gold">★</span>
+                    {t('generate.goRecharge')}
+                  </Link>
                 )}
+              </div>
 
-                {/* 快速提示 */}
-                <div className="mt-5 p-4 rounded-xl border" style={{ borderColor: "var(--line-soft)" }}>
-                  <p className="text-xs tx-soft mb-2" style={{ letterSpacing: "0.04em", textTransform: "uppercase", fontWeight: 600 }}>创作小贴士</p>
-                  <ul className="space-y-1.5 text-sm tx-muted">
-                    <li className="flex gap-2">
-                      <span style={{ color: "var(--fg)" }}>•</span>
-                      <span>描述越具体效果越好：主体 + 风格 + 光影 + 构图</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <span style={{ color: "var(--fg)" }}>•</span>
-                      <span>选择「艺术风格」可一键注入专业后缀，提升出片质量</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <span style={{ color: "var(--fg)" }}>•</span>
-                      <span>点击「最近生成」缩略图可一键载入历史参数再创作</span>
-                    </li>
-                  </ul>
+              {!canAfford && (
+                <div className="mb-5 text-sm p-4 rounded-xl text-center" style={{ background: "#fef2f2", color: "#dc2626" }}>
+                  <div className="font-semibold mb-1">{t('generate.notEnoughPoints')}</div>
+                  <div>{t('generate.notEnoughPointsDesc')} <strong>{cost - points}</strong> {t('generate.costLabel')}</div>
                 </div>
+              )}
+
+              {/* 创作小贴士内嵌左栏底部，避免右栏太空 / 之前小贴士在右栏占一大块导致视觉失衡 */}
+              <div className="p-4 rounded-xl border" style={{ borderColor: "var(--line-soft)", background: "var(--bg-soft)" }}>
+                <p className="text-xs tx-soft mb-2.5" style={{ letterSpacing: "0.04em", textTransform: "uppercase", fontWeight: 600 }}>
+                  💡 {t('generate.tipsTitle')}
+                </p>
+                <ul className="space-y-2 text-sm tx-muted">
+                  <li className="flex gap-2"><span style={{ color: "var(--fg)" }}>•</span><span>{t('generate.tip1')}</span></li>
+                  <li className="flex gap-2"><span style={{ color: "var(--fg)" }}>•</span><span>{t('generate.tip2')}</span></li>
+                  <li className="flex gap-2"><span style={{ color: "var(--fg)" }}>•</span><span>{t('generate.tip3')}</span></li>
+                </ul>
               </div>
             </div>
+
+            {/* 右：大图预览 */}
+            <div className="gen-panel fade-up delay-2">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-semibold tx-foreground flex items-center gap-2">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="2" />
+                    <circle cx="8.5" cy="8.5" r="1.5" />
+                    <path d="M21 15l-5-5L5 21" />
+                  </svg>
+                  {t('generate.preview')}
+                </h2>
+                <div className="flex gap-2">
+                  {currentImage && !generating && (
+                    <>
+                      <button
+                        onClick={handleDownload}
+                        className="btn-primary px-4 py-2 text-xs font-medium inline-flex items-center gap-1.5"
+                      >
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                          <polyline points="7 10 12 15 17 10" />
+                          <line x1="12" y1="15" x2="12" y2="3" />
+                        </svg>
+                        {t('generate.download')}
+                      </button>
+                      <a
+                        href={currentImage}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn-outline px-4 py-2 text-xs font-medium no-underline inline-flex items-center gap-1.5"
+                      >
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                          <polyline points="15 3 21 3 21 9" />
+                          <line x1="10" y1="14" x2="21" y2="3" />
+                        </svg>
+                        {t('generate.original')}
+                      </a>
+                    </>
+                  )}
+                </div>
+              </div>
+
+              {/* 大预览框：aspectRatio 跟随选择比例 */}
+              <div className="gen-preview mb-5" style={selectedAR.css}>
+                {generating ? (
+                  <div className="text-center flex flex-col items-center gap-3 px-6">
+                    <div className="spinner spinner-lg" />
+                    <div>
+                      <p className="font-semibold tx-foreground text-base mb-1">{t('generate.creating')}</p>
+                      <p className="text-sm tx-muted">{t('generate.creatingDesc')}</p>
+                    </div>
+                  </div>
+                ) : currentImage ? (
+                  <img
+                    ref={imgRef}
+                    src={currentImage}
+                    alt="Generated"
+                    crossOrigin="anonymous"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><rect width='400' height='400' fill='%23f5f5f5'/><text x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%238c8c8c' font-family='Arial' font-size='14'>Click to view image</text></svg>"
+                    }}
+                  />
+                ) : (
+                  <div className="gen-placeholder">
+                    {/* 用大号 emoji + 渐变卡片图标代替 SVG，避免深色模式下 SVG 线条渲染异常 */}
+                    <div className="gen-placeholder-icon">✨</div>
+                    <div className="gen-placeholder-title">{t('generate.previewPlaceholder')}</div>
+                    <div className="gen-placeholder-desc">{t('generate.previewReadyDesc')}</div>
+                  </div>
+                )}
+              </div>
+
+              {/* 当前创作的参数 + 描述 */}
+              {lastPrompt && !generating && (
+                <div className="space-y-3">
+                  <div className="flex flex-wrap gap-2 mb-2">
+                    {lastQuality && (
+                      <span className="badge-soft">
+                        {t('generate.qualityBadgeLabel')}：{QUALITY_OPTIONS.find((q) => q.value === lastQuality)?.label}
+                      </span>
+                    )}
+                    {lastAR && (
+                      <span className="badge-soft">
+                        {t('generate.aspectBadgeLabel')}：{ASPECT_RATIOS.find((a) => a.value === lastAR)?.label}
+                      </span>
+                    )}
+                    {lastStyle && lastStyle !== "auto" && (
+                      <span className="badge-soft">
+                        {t('generate.styleBadgeLabel')}：{IMAGE_STYLES.find((s) => s.value === lastStyle)?.label}
+                      </span>
+                    )}
+                    <span className="badge-soft">-{cost} {t('generate.costLabel')}</span>
+                  </div>
+                  <div className="p-4 rounded-xl" style={{ background: "var(--bg-soft)" }}>
+                    <p className="text-xs tx-soft mb-2" style={{ letterSpacing: "0.04em", textTransform: "uppercase", fontWeight: 600 }}>
+                      {t('generate.lastPromptTitle')}
+                    </p>
+                    <p className="text-sm tx-foreground leading-relaxed whitespace-pre-wrap">{lastPrompt}</p>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* 全宽：最近生成历史网格（从左栏挪到下方全宽，视觉面积更大） */}
+          <div className="gen-panel fade-up delay-3">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold tx-foreground flex items-center gap-2">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="3" width="18" height="18" rx="2" />
+                  <line x1="3" y1="9" x2="21" y2="9" />
+                  <line x1="9" y1="21" x2="9" y2="9" />
+                </svg>
+                {t('generate.historyLabel')}
+              </h2>
+              <div className="flex items-center gap-2">
+                <span className="badge-soft">{generationRecords.length} 张</span>
+                {generationRecords.length > 0 && (
+                  <Link href="/gallery" className="btn-outline px-3 py-1.5 text-xs font-medium no-underline">
+                    查看全部 →
+                  </Link>
+                )}
+              </div>
+            </div>
+            {generationRecords.length === 0 ? (
+              <div className="gen-history-empty">
+                <p className="text-sm font-medium tx-foreground mb-1">{t('generate.historyEmpty')}</p>
+                <p className="text-xs tx-muted">{t('generate.historyEmptyDesc')}</p>
+              </div>
+            ) : (
+              <div className="gen-history">
+                {generationRecords.slice(0, 16).map((r) => (
+                  <div
+                    key={r.id}
+                    className="gen-history-item"
+                    onClick={() => handleUseAsPrompt(r)}
+                    title={`${r.prompt.slice(0, 50)} · 点击重新载入参数`}
+                    style={{ backgroundImage: `url(${r.imageUrl})`, aspectRatio: r.aspectRatio === "1:1" ? "1 / 1" : undefined }}
+                  >
+                    {r.isFavorite && (
+                      <span className="fav-chip" title="已收藏">★</span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </main>
