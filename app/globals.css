@@ -40,7 +40,12 @@
   text-rendering: optimizeLegibility;
 }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  /* 固定滚动条宽度占位，切换页面时避免视口宽度变化导致 mx-auto 居中的菜单栏抖动/左移 */
+  overflow-y: scroll;
+  scrollbar-gutter: stable both-edges;
+}
 
 body {
   background: var(--bg);
