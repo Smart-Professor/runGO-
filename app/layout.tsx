@@ -1,13 +1,28 @@
+"use client"
+
 import type { Metadata } from "next";
 import "./globals.css";
+import { UserPointsProvider } from "@/lib/points/UserPointsContext";
+import { ToastProvider } from "@/components/Toast";
+import { useState, useEffect } from "react";
+import { createClient } from "@/lib/supabase/client";
 
-export const metadata: Metadata = {
-  title: "Aurora — Data, Decided.",
-  description:
-    "Aurora turns raw events into decisions. Real-time dashboards, AI-powered insights, and alerts that actually matter — all in one platform.",
-};
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const [authUserId, setAuthUserId] = useState<string | null>(null);
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+  useEffect(() => {
+    const checkUser = async () => {
+      try {
+        const supabase = createClient();
+        const { data: { user } } = await supabase.auth.getUser();
+        setAuthUserId(user?.id || null);
+      } catch {
+        setAuthUserId(null);
+      }
+    };
+    checkUser();
+  }, []);
+
   return (
     <html lang="en" className="h-full antialiased">
       <head>
@@ -22,7 +37,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           rel="stylesheet"
         />
       </head>
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <ToastProvider>
+          <UserPointsProvider authenticatedUserId={authUserId}>
+            {children}
+          </UserPointsProvider>
+        </ToastProvider>
+      </body>
     </html>
   );
 }

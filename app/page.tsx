@@ -1,6 +1,10 @@
+"use client"
+
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import FAQ from "./FAQ";
 import Nav from "../components/Nav";
+import { useUserPoints } from "@/lib/points/UserPointsContext";
 
 /* =========================================================
    Data
@@ -149,6 +153,45 @@ const footerLinks = [
 ];
 
 /* =========================================================
+   AI Image Generation Cards
+   ========================================================= */
+
+const imageGenCards = [
+  {
+    tag: "产品摄影",
+    tagColor: "#0a0a0a",
+    title: "商业级产品摄影",
+    desc: "为电商、品牌、营销物料生成专业级产品图，多场景光影，真实质感。",
+    image: "/images/gen-card-1.jpg",
+    prompt: "Professional commercial product photography, premium wireless earbuds on marble surface, soft studio lighting",
+  },
+  {
+    tag: "角色设计",
+    tagColor: "#8b5cf6",
+    title: "原创角色 & IP",
+    desc: "一键生成原创动漫、游戏、插画风格角色，可定制外貌、服装、风格。",
+    image: "/images/gen-card-2.jpg",
+    prompt: "Anime girl with long flowing lavender hair and starry eyes, elegant fantasy dress, pastel colors",
+  },
+  {
+    tag: "概念艺术",
+    tagColor: "#ef4444",
+    title: "影视级概念场景",
+    desc: "打造赛博朋克、奇幻、科幻等宏大世界观的场景概念图，电影级质感。",
+    image: "/images/gen-card-3.jpg",
+    prompt: "Cyberpunk neon city street at night in rain, dramatic lighting, blade runner aesthetic, cinematic",
+  },
+  {
+    tag: "时尚电商",
+    tagColor: "#f59e0b",
+    title: "穿搭 & 时尚大片",
+    desc: "生成高端服装穿搭图、生活方式、杂志风人像，助力品牌视觉营销。",
+    image: "/images/gen-card-4.jpg",
+    prompt: "Minimalist fashion flat lay, beige trench coat on marble table, warm natural lighting, lifestyle aesthetic",
+  },
+];
+
+/* =========================================================
    Dashboard Mockup (pure CSS)
    ========================================================= */
 
@@ -239,6 +282,15 @@ function DashboardMock() {
    ========================================================= */
 
 export default function Home() {
+  const router = useRouter()
+  const { points, loading: pointsLoading } = useUserPoints()
+
+  const handleCardClick = (prompt: string) => {
+    // 跳转到生成页面，并携带预设prompt
+    const encoded = encodeURIComponent(prompt)
+    router.push(`/generate?p=${encoded}`)
+  }
+
   return (
     <div className="relative">
       {/* ===== NAV ===== */}
@@ -314,6 +366,116 @@ export default function Home() {
                 <p className="mt-2 text-sm leading-relaxed tx-muted">{f.desc}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ===== AI IMAGE GENERATION STUDIO ===== */}
+      <section className="py-24 bg-soft">
+        <div className="mx-auto max-w-7xl px-6 lg:px-10">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-14 gap-6">
+            <div className="fade-up">
+              <div className="section-eyebrow">
+                <span className="inline-block w-1 h-1 rounded-full accent-logo" />
+                AI IMAGE STUDIO
+              </div>
+              <h2 className="section-title">
+                AI 图片生成，<br />让创意即刻呈现。
+              </h2>
+              <p className="section-subtitle">
+                多种风格模板一键跳转，输入描述即可生成精美图片。每张图片消耗积分，新用户注册赠送 100 积分免费体验。
+              </p>
+            </div>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 fade-up delay-2">
+              <div className="points-badge" style={{ padding: "0.55rem 1rem", fontSize: "0.9rem" }}>
+                <span className="points-icon points-icon-gold" style={{ width: 20, height: 20, fontSize: "0.72rem" }}>★</span>
+                <span className="font-semibold">
+                  我的积分：{!pointsLoading ? points.toLocaleString() : "..."}
+                </span>
+              </div>
+              <Link href="/generate" className="btn-primary px-6 py-3 text-sm font-medium inline-flex items-center gap-2 no-underline">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 2l2.09 6.26L20 9l-5 4.1L16.18 20 12 17.27 7.82 20 9 13.1 4 9l5.91-.74L12 2z" />
+                </svg>
+                立即开始创作
+                <span>→</span>
+              </Link>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {imageGenCards.map((card, i) => (
+              <div
+                key={card.title}
+                className={`gen-card fade-up delay-${(i % 4) + 1}`}
+                onClick={() => handleCardClick(card.prompt)}
+              >
+                <div
+                  className="gen-card-image"
+                  style={{ backgroundImage: `url(${card.image})` }}
+                >
+                  <span
+                    className="gen-card-tag badge-soft"
+                    style={{
+                      background: card.tagColor,
+                      color: "#ffffff",
+                      border: "none",
+                      textShadow: "0 1px 2px rgba(0,0,0,0.2)",
+                    }}
+                  >
+                    {card.tag}
+                  </span>
+                  <div className="gen-card-overlay">
+                    <div className="text-sm font-medium inline-flex items-center gap-1">
+                      使用此模板创作
+                      <span>→</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="gen-card-body">
+                  <h3 className="gen-card-title">{card.title}</h3>
+                  <p className="gen-card-desc">{card.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Mascot & CTA row */}
+          <div className="mt-16 grid grid-cols-1 lg:grid-cols-5 gap-8 items-center card rounded-2xl p-8 lg:p-10 fade-up">
+            <div className="lg:col-span-2 flex justify-center">
+              <div
+                className="w-48 h-48 lg:w-56 lg:h-56 rounded-3xl bg-soft flex items-center justify-center overflow-hidden"
+                style={{
+                  backgroundImage: "url(/images/aurora-mascot.jpg)",
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  border: "1px solid var(--line)",
+                }}
+              />
+            </div>
+            <div className="lg:col-span-3">
+              <div className="inline-flex items-center gap-2 mb-3">
+                <span className="accent-logo inline-block h-2 w-2 rounded-full" />
+                <span className="text-xs uppercase tracking-widest tx-muted">Meet Aurora</span>
+              </div>
+              <h3 className="text-2xl lg:text-3xl font-semibold tx-foreground mb-3 leading-tight">
+                认识 Aurora — 你的 AI 创作助手
+              </h3>
+              <p className="tx-muted leading-relaxed mb-6 max-w-xl">
+                Aurora 是你专属的 AI 创作伙伴，从产品摄影到动漫角色，从概念场景到时尚大片，
+                把你的文字描述变成高质量视觉作品。点击下方按钮，立即开启你的创作之旅。
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <Link href="/generate" className="btn-primary px-6 py-3 text-sm font-medium inline-flex items-center gap-2 no-underline">
+                  进入创作工作台
+                  <span>→</span>
+                </Link>
+                <Link href="/recharge" className="btn-outline px-6 py-3 text-sm font-medium inline-flex items-center gap-2 no-underline">
+                  <span className="points-icon points-icon-gold">★</span>
+                  充值积分
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </section>
