@@ -519,15 +519,41 @@ body {
 }
 .gen-textarea::placeholder { color: var(--fg-soft); }
 
+/* -------- 参数分组卡片：把参数面板分成 3~4 组，视觉上不再是长竖条 -------- */
+.gen-section {
+  background: var(--bg-soft);
+  border: 1px solid var(--line-soft);
+  border-radius: 14px;
+  padding: 1.15rem 1.1rem;
+  margin-bottom: 1.1rem;
+}
+.gen-section:last-child { margin-bottom: 0; }
+.gen-section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--fg-soft);
+  margin-bottom: 0.85rem;
+}
+.gen-section-title > svg { flex-shrink: 0; }
+
 .quality-option {
   flex: 1;
-  padding: 0.9rem 1rem;
+  min-width: 0;
+  padding: 0.8rem 0.85rem 0.85rem;
   border: 1px solid var(--line);
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.2s ease;
-  background: var(--bg);
+  background: var(--bg-card);
   text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 .quality-option:hover { border-color: #bfbfbf; }
 .quality-selected {
@@ -536,16 +562,22 @@ body {
   color: #ffffff;
 }
 .quality-selected .quality-label { color: #ffffff; }
-.quality-selected .quality-cost { color: rgba(255,255,255,0.7); }
+.quality-selected .quality-cost { color: rgba(255,255,255,0.72); }
 .quality-label {
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-size: 0.88rem;
+  font-weight: 700;
   color: var(--fg);
-  margin-bottom: 0.2rem;
+  line-height: 1.2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 .quality-cost {
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   color: var(--fg-muted);
+  white-space: nowrap;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
 }
 
 .gen-preview {
@@ -1489,27 +1521,30 @@ html.dark .gen-history-item:hover { border-color: #52525b; }
    Aspect Ratio Selector — 画幅选择器
    ========================================================= */
 .aspect-option {
-  padding: 0.7rem 0.3rem 0.55rem;
+  padding: 0.65rem 0.2rem 0.55rem;
   border: 1px solid var(--line);
   border-radius: 10px;
-  background: var(--bg);
+  background: var(--bg-card);
   cursor: pointer;
   transition: all 0.2s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.4rem;
+  min-height: 80px; /* 固定高度，允许「手机竖屏 9:16」这种两行文字的按钮不变形、不参差 */
+  justify-content: center;
 }
 .aspect-option:hover {
   border-color: #bfbfbf;
 }
 .aspect-selected {
   border-color: #0a0a0a;
-  background: #fafafa;
+  background: var(--bg-soft);
   box-shadow: 0 0 0 2px rgba(0,0,0,0.06);
 }
 .aspect-thumb {
-  width: 36px;
+  width: 32px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1523,10 +1558,15 @@ html.dark .gen-history-item:hover { border-color: #52525b; }
   background: #0a0a0a;
 }
 .aspect-label {
-  font-size: 0.72rem;
+  font-size: 0.65rem;
   color: var(--fg-muted);
   font-weight: 500;
   transition: color 0.2s ease;
+  line-height: 1.1;
+  text-align: center;
+  padding: 0 2px;
+  /* 允许两行，但严格控制字号和行高，避免溢出 */
+  max-width: 100%;
 }
 .aspect-selected .aspect-label {
   color: var(--fg);
@@ -1546,6 +1586,119 @@ html.dark .gen-history-item:hover { border-color: #52525b; }
   border-radius: 50%;
   font-size: 0.65rem;
   font-weight: 700;
+}
+
+/* =========================================================
+   Simple Generate Layout — 简洁单块布局
+   ========================================================= */
+.gen-container {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 24px -8px rgba(0,0,0,0.04);
+}
+
+.gen-pill {
+  appearance: none;
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--fg);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  /* 移除默认下拉箭头以保持外观整洁 */
+  background-image: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+.gen-pill:hover {
+  border-color: #bfbfbf;
+  background: var(--bg-card);
+}
+.gen-pill:focus {
+  outline: none;
+  border-color: #0a0a0a;
+  box-shadow: 0 0 0 2px rgba(0,0,0,0.08);
+}
+
+html.dark .gen-pill {
+  background: var(--bg-soft);
+  border-color: var(--line);
+}
+html.dark .gen-pill:hover {
+  border-color: #3a3a40;
+}
+html.dark .gen-pill:focus {
+  border-color: #ededed;
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.08);
+}
+
+.gen-action-btn {
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0.5rem 1.2rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--fg);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.gen-action-btn:hover {
+  background: var(--bg-soft);
+  border-color: #bfbfbf;
+}
+.gen-action-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.gen-generate-btn {
+  background: #0a0a0a;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.55rem 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.gen-generate-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.gen-generate-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+html.dark .gen-generate-btn {
+  background: #ededed;
+  color: #0a0a0a;
+  box-shadow: 0 2px 8px rgba(255,255,255,0.05);
+}
+html.dark .gen-action-btn {
+  border-color: var(--line);
+  color: var(--fg);
+}
+html.dark .gen-action-btn:hover {
+  background: rgba(255,255,255,0.05);
+  border-color: #3a3a40;
 }
 
 /* =========================================================
