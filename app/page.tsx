@@ -506,26 +506,13 @@ export default function Home() {
                 </ul>
               </div>
               <div className={idx % 2 === 1 ? "lg:order-1" : ""}>
-                <div className="card p-6">
-                  <div className="mb-4 flex items-center justify-between">
-                    <div className="text-xs font-medium tx-soft">{s.badge} · last 8 hours</div>
-                    <div className="flex items-center gap-1.5">
-                      <span className="pulse-dot" />
-                      <span className="text-xs tx-soft">Live</span>
-                    </div>
-                  </div>
-                  <div className="bar-chart" style={{ height: "180px" }}>
-                    {s.bars.map((h, i) => (
-                      <div
-                        key={i}
-                        className={`bar ${i >= 5 ? "bar-dark" : ""}`}
-                        style={{ height: `${h}%`, animationDelay: `${i * 0.06}s` }}
-                      />
-                    ))}
-                  </div>
-                  <div className="mt-3 flex justify-between text-[10px] tx-soft">
-                    <span>00:00</span><span>02:00</span><span>04:00</span><span>06:00</span><span>08:00</span>
-                  </div>
+                <div className="card product-showcase-card overflow-hidden p-0">
+                  <div
+                    className="product-showcase-img"
+                    style={{
+                      backgroundImage: `url(/images/${idx === 0 ? "product-dashboard-1" : "product-dashboard-2"}.jpg)`,
+                    }}
+                  />
                 </div>
               </div>
             </div>
@@ -616,7 +603,10 @@ export default function Home() {
                 </svg>
                 <p className="text-base leading-relaxed tx-foreground">{t(`home.testimonials.items.${i}.quote`)}</p>
                 <div className="mt-6 flex items-center gap-3">
-                  <span className="avatar">{tm.initials}</span>
+                  <div
+                    className="avatar-img"
+                    style={{ backgroundImage: `url(/images/avatar-${["sarah", "marcus", "priya"][i]}.jpg)` }}
+                  />
                   <div>
                     <div className="text-sm font-medium tx-foreground">{t(`home.testimonials.items.${i}.name`)}</div>
                     <div className="text-xs tx-soft">{t(`home.testimonials.items.${i}.role`)}</div>

@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import Nav from "@/components/Nav"
+import CustomSelect from "@/components/CustomSelect"
 import { useUserPoints, aspectRatioToImageSize } from "@/lib/points/UserPointsContext"
 import { useToast } from "@/components/Toast"
 import { useI18n } from "@/lib/i18n/I18nContext"
@@ -21,6 +22,14 @@ const QUALITY_OPTIONS: { value: Quality; label: string; size: string }[] = [
   { value: "ultra", label: "超清画质", size: "2048+ px" },
 ]
 
+const MODELS = [
+  { value: "seedream", label: "Seedream", desc: "通用模型" },
+  { value: "seedream-3-0-t2i-turbo", label: "Seedream 3.0 Turbo", desc: "极速生成" },
+  { value: "seedream-3-0-t2i", label: "Seedream 3.0", desc: "高清画质" },
+]
+
+const COUNTS = [1, 2, 4] as const
+
 const PRESET_PROMPTS = [
   { label: "产品摄影", prompt: "A minimalist product photo of a sleek smartwatch on a white marble surface, soft natural lighting from window, professional commercial photography, shallow depth of field, 85mm lens" },
   { label: "角色设计", prompt: "A cute female anime character with long silver hair and blue eyes, wearing a magical girl outfit, pastel color palette, detailed illustration style, fantasy background with cherry blossoms" },
@@ -34,11 +43,19 @@ const PRESET_PROMPTS = [
 
 const IMAGE_API_BASE = "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image"
 
-function buildImageUrl(prompt: string, quality: Quality, ar: AspectRatio): string {
+function buildImageUrl(prompt: string, quality: Quality, ar: AspectRatio, model: string): string {
   const size = aspectRatioToImageSize(ar)
   const finalSize = quality === "standard" ? size.replace(/_hd$/, "") : (quality === "ultra" ? (size + "_hd").replace("_hd_hd", "_hd") : (size === "square" ? "square_hd" : size))
   const encoded = encodeURIComponent(prompt)
-  return `${IMAGE_API_BASE}?prompt=${encoded}&image_size=${finalSize === "square" || finalSize === "square_hd" ? (quality === "standard" ? "square" : "square_hd") : finalSize}`
+  
+  const params = new URLSearchParams({ prompt, model: model })
+  
+  const sizeParam = finalSize === "square" || finalSize === "square_hd" 
+    ? (quality === "standard" ? "square" : "square_hd") 
+    : finalSize
+  params.append("image_size", sizeParam)
+  
+  return `${IMAGE_API_BASE}?${params.toString()}`
 }
 
 export default function GeneratePage() {
@@ -53,8 +70,10 @@ export default function GeneratePage() {
   const [quality, setQuality] = useState<Quality>(preferences.defaultQuality)
   const [aspectRatio, setAspectRatio] = useState<AspectRatio>(preferences.defaultAspectRatio)
   const [style, setStyle] = useState<ImageStyle>("auto")
+  const [model, setModel] = useState<string>(MODELS[0].value)
+  const [count, setCount] = useState<number>(1)
   const [generating, setGenerating] = useState(false)
-  const [currentImage, setCurrentImage] = useState<string | null>(null)
+  const [currentImages, setCurrentImages] = useState<string[]>([])
   const [lastPrompt, setLastPrompt] = useState<string>("")
   const [lastQuality, setLastQuality] = useState<Quality | null>(null)
   const [lastAR, setLastAR] = useState<AspectRatio | null>(null)
@@ -114,14 +133,18 @@ export default function GeneratePage() {
       showToast("请先上传一张参考图片", "error")
       return
     }
-    if (!canAfford) {
-      showToast(`积分不足！当前 ${points}，需要 ${effectiveCost} 积分`, "error")
+    
+    const totalCostPerImage = mode === "img2img" ? cost * 2 : cost
+    const totalCost = totalCostPerImage * count
+
+    if (!canAfford || points < totalCost) {
+      showToast(`积分不足！当前 ${points}，需要 ${totalCost} 积分`, "error")
       setTimeout(() => router.push("/recharge"), 1500)
       return
     }
 
     setGenerating(true)
-    setCurrentImage(null)
+    setCurrentImages([])
     setLastPrompt(prompt)
     setLastQuality(quality)
     setLastAR(aspectRatio)
@@ -135,16 +158,30 @@ export default function GeneratePage() {
         return
       }
 
-      const imageUrl = buildImageUrl(enrichedPrompt, quality, aspectRatio)
-      await new Promise((resolve) => setTimeout(resolve, 2000))
-      const result = await generateImage({
-        prompt: enrichedPrompt, imageUrl, quality, aspectRatio, style,
-      })
-      if (result.success) {
-        setCurrentImage(imageUrl)
-        showToast(`生成成功！消耗 ${cost} 积分，剩余 ${result.remaining} 积分`, "success")
-      } else {
-        showToast(result.message || "生成失败", "error")
+      const generatedImages: string[] = []
+      let remainingPoints = points
+
+      for (let i = 0; i < count; i++) {
+        const imageUrl = buildImageUrl(enrichedPrompt, quality, aspectRatio, model)
+        await new Promise((resolve) => setTimeout(resolve, 1500))
+        const result = await generateImage({
+          prompt: enrichedPrompt, imageUrl, quality, aspectRatio, style,
+        })
+        if (result.success) {
+          generatedImages.push(imageUrl)
+          if (result.remaining !== undefined) {
+            remainingPoints = result.remaining
+          }
+        } else {
+          showToast(`第 ${i + 1} 张生成失败：${result.message}`, "error")
+          break
+        }
+      }
+      
+      if (generatedImages.length > 0) {
+        setCurrentImages(generatedImages)
+        const actualCost = totalCostPerImage * generatedImages.length
+        showToast(`成功生成 ${generatedImages.length} 张图片！共消耗 ${actualCost} 积分，剩余 ${remainingPoints}`, "success")
       }
     } catch (err) {
       showToast("生成出错，请稍后重试", "error")
@@ -156,25 +193,25 @@ export default function GeneratePage() {
   const applyPreset = (p: string) => setPrompt(p)
   const viewImage = (url: string) => window.open(url, "_blank")
 
-  const handleDownload = async () => {
-    if (!currentImage) return
+  const handleDownload = async (imageUrl: string, index: number = 0) => {
+    if (!imageUrl) return
     try {
-      const res = await fetch(currentImage)
+      const res = await fetch(imageUrl)
       const blob = await res.blob()
       const url = URL.createObjectURL(blob)
       const a = document.createElement("a")
       a.href = url
       const ts = new Date().toISOString().slice(0, 19).replace(/[:T]/g, "-")
-      a.download = `aurora_${quality}_${aspectRatio.replace(":", "-")}_${ts}.jpg`
+      a.download = `aurora_${quality}_${aspectRatio.replace(":", "-")}_${index + 1}_${ts}.jpg`
       document.body.appendChild(a)
       a.click()
       document.body.removeChild(a)
       URL.revokeObjectURL(url)
-      showToast("已开始下载图片", "success")
+      showToast(`已开始下载图片 ${index + 1}`, "success")
     } catch {
       // 跨域场景 fallback
-      window.open(currentImage, "_blank")
-      showToast("已打开原图，请右键另存为", "info")
+      window.open(imageUrl, "_blank")
+      showToast(`已打开图片 ${index + 1}，请右键另存为`, "info")
     }
   }
 
@@ -276,40 +313,26 @@ export default function GeneratePage() {
 
             {/* 参数紧凑行 */}
             <div className="flex flex-wrap items-center gap-2 mb-4">
-              {/* 模型/风格选择 */}
-              <div className="flex gap-1.5">
-                <select 
-                  value={style}
-                  onChange={(e) => setStyle(e.target.value as ImageStyle)}
-                  className="gen-pill"
-                >
-                  {IMAGE_STYLES.map((s) => (
-                    <option key={s.value} value={s.value}>{t('generate.styleLabel')}: {s.label}</option>
-                  ))}
-                </select>
-                
-                <select 
-                  value={aspectRatio}
-                  onChange={(e) => setAspectRatio(e.target.value as AspectRatio)}
-                  className="gen-pill"
-                >
-                  {ASPECT_RATIOS.map((a) => (
-                    <option key={a.value} value={a.value}>Size: {a.label}</option>
-                  ))}
-                </select>
+              {/* 生成数量选择 */}
+              <CustomSelect
+                value={count}
+                onChange={(v) => setCount(v as number)}
+                options={COUNTS.map((c) => ({ value: c, label: `数量: ${c}x` }))}
+              />
+              
+              {/* 模型选择 */}
+              <CustomSelect
+                value={model}
+                onChange={(v) => setModel(v as string)}
+                options={MODELS.map((m) => ({ value: m.value, label: `模型: ${m.label}` }))}
+              />
 
-                <select 
-                  value={quality}
-                  onChange={(e) => setQuality(e.target.value as Quality)}
-                  className="gen-pill"
-                >
-                  {QUALITY_OPTIONS.map((q) => (
-                    <option key={q.value} value={q.value}>
-                      {q.value === "standard" ? "标准" : q.value === "hd" ? "高清" : "超清"}: {q.size}
-                    </option>
-                  ))}
-                </select>
-              </div>
+              {/* 分辨率选择 */}
+              <CustomSelect
+                value={quality}
+                onChange={(v) => setQuality(v as Quality)}
+                options={QUALITY_OPTIONS.map((q) => ({ value: q.value, label: `分辨率: ${q.value === "standard" ? "标准" : q.value === "hd" ? "高清" : "超清"} (${q.size})` }))}
+              />
             </div>
 
             {/* 底部操作区 */}
@@ -324,7 +347,7 @@ export default function GeneratePage() {
                 ) : (
                   <>
                     <span className="font-medium" style={{ color: "var(--fg)" }}>
-                      消耗 {mode === "img2img" ? cost * 2 : cost} 积分
+                      消耗 {(mode === "img2img" ? cost * 2 : cost) * count} 积分
                       {mode === "img2img" && <span className="tx-soft ml-1 text-xs">(Pro ×2)</span>}
                     </span>
                     <span className="text-xs">· 当前余额 {points}</span>
@@ -346,27 +369,60 @@ export default function GeneratePage() {
                   disabled={generating || !canAfford || !prompt.trim() || (mode === "img2img" && !sourceImage)}
                   className="gen-generate-btn"
                 >
-                  {generating ? "生成中..." : mode === "img2img" ? "✨ Pro 生成" : "✨ 生成图片"}
+                  {generating ? `生成中... (${currentImages.length}/${count})` : mode === "img2img" ? "✨ Pro 生成" : `✨ 生成 ${count} 张`}
                 </button>
               </div>
             </div>
           </div>
 
           {/* 结果展示区 */}
-          {currentImage && !generating && (
+          {currentImages.length > 0 && !generating && (
             <div className="mt-8 fade-up">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-semibold tx-foreground">生成结果</h2>
                 <div className="flex gap-2">
-                  <button onClick={handleDownload} className="gen-action-btn">下载</button>
-                  <a href={currentImage} target="_blank" rel="noopener noreferrer" className="gen-action-btn no-underline">
-                    原图
-                  </a>
+                  <button 
+                    onClick={() => currentImages.forEach((url, idx) => handleDownload(url, idx))} 
+                    className="gen-action-btn"
+                  >
+                    全部下载
+                  </button>
                 </div>
               </div>
-              <div className="rounded-xl overflow-hidden border" style={{ borderColor: "var(--line)" }}>
-                <img src={currentImage} alt="Generated" className="w-full h-auto block" />
+              
+              {/* 多图网格展示 */}
+              <div className={`grid gap-4 ${currentImages.length === 1 ? 'grid-cols-1' : currentImages.length === 2 ? 'grid-cols-2' : 'grid-cols-2 sm:grid-cols-2'}`}>
+                {currentImages.map((imgUrl, idx) => (
+                  <div key={idx} className="relative rounded-xl overflow-hidden border group" style={{ borderColor: "var(--line)" }}>
+                    <img 
+                      src={imgUrl} 
+                      alt={`Generated ${idx + 1}`} 
+                      className="w-full h-auto block hover:scale-105 transition-transform duration-300"
+                      loading="lazy"
+                    />
+                    <div className="absolute bottom-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <button 
+                        onClick={() => handleDownload(imgUrl, idx)}
+                        className="px-2 py-1 rounded text-xs bg-black/60 text-white hover:bg-black/80"
+                      >
+                        下载
+                      </button>
+                      <a 
+                        href={imgUrl} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="px-2 py-1 rounded text-xs bg-black/60 text-white hover:bg-black/80 no-underline"
+                      >
+                        原图
+                      </a>
+                    </div>
+                    <div className="absolute top-2 left-2 px-2 py-0.5 rounded text-xs bg-black/60 text-white">
+                      #{idx + 1}
+                    </div>
+                  </div>
+                ))}
               </div>
+              
               {lastPrompt && (
                 <div className="mt-3 p-4 rounded-xl text-sm" style={{ background: "var(--bg-soft)" }}>
                   <div className="text-xs tx-soft mb-1.5 font-medium">提示词</div>
